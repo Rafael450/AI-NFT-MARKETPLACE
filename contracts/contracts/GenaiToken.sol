@@ -48,6 +48,11 @@ contract GenAI is IERC20 {
         return true;
     }
 
+    function burn(uint256 _amount) external {
+        _burn(msg.sender, _amount);
+        return true;
+    }
+
     function _transfer(address _sender, address _recipient, uint256 _amount) private {
         require(_sender != address(0), "transfer from the zero address");
         require(_recipient != address(0), "transfer to the zero address");
@@ -57,10 +62,18 @@ contract GenAI is IERC20 {
         emit Transfer(_sender, _recipient, _amount);
     }
 
-    function _approve(address owner, address spender, uint256 amount) private {
-        require(owner != address(0), "approve from the zero address");
-        require(spender != address(0), "approve to the zero address");
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
+    function _approve(address _owner, address _spender, uint256 _amount) private {
+        require(_owner != address(0), "approve from the zero address");
+        require(_spender != address(0), "approve to the zero address");
+        allowances[_owner][_spender] = _amount;
+        emit Approval(_owner, _spender, _amount);
+    }
+
+    function _burn(address _account, uint256 _amount) internal {
+        require(_account != address(0), "burn from the zero address");
+        require(_balances[_account] >= _amount, "burn amount exceeds balance");
+        _balances[_account] -= _amount;
+        _totalSupply -= _amount;
+        emit Transfer(_account, address(0), _amount);
     }
 }

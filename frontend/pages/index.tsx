@@ -32,6 +32,9 @@ export default function Home() {
               txtColor="black"
               variant="solid"
               action={()=> setConnectModal(true)}
+              style={{
+                margin: "2px"
+              }}
             />
         <Menu>
           {!connected && (
@@ -43,17 +46,9 @@ export default function Home() {
               value="Connect your wallet"
               variant="solid"
               action={()=> setConnectModal(true)}
-            />
-          )}
-          {connected && (
-            <Button
-              ariaLabel="Disconnect"
-              className="button"
-              color="white"
-              txtColor="red"
-              value="Disconnect"
-              variant="solid"
-              action={()=> setConnectModal(false)}
+              style={{
+                margin: "2px"
+              }}
             />
           )}
           {connected && <ClickableEthAddress onClick={()=> setConnectModal(true)}/>}
@@ -63,7 +58,9 @@ export default function Home() {
       <Main>
         <Content>
           <Title>Give wings to your horses!</Title>
-          <Title>Be bold. Be wild. Be GenIA.</Title>
+          <Title
+            style={{marginBottom: "20px"}}
+          >Be bold. Be wild. Be GenIA.</Title>
           <TextField
             name="generate-prompt"
             onChange={function noRefCheck(){}}
@@ -82,6 +79,19 @@ export default function Home() {
             }}
             max={10}
           />
+          <Button
+              ariaLabel="generate"
+              className="button"
+              value="Generate"
+              color="black"
+              txtColor="white"
+              variant="solid"
+              action={()=> setConnectModal(true)}
+              style={{
+                margin: "2px",
+                fontWeight: "bold"
+              }}
+            />
         </Content>        
       </Main>
     </Container>

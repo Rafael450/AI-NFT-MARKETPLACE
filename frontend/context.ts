@@ -5,9 +5,10 @@ import { chainDict } from "./constants/networks";
 import { dappConfig } from "./config";
 
 export const defaulDappkitProvider = new DappkitReactProvider(
-    dappConfig.chainId,
+    // dappConfig.chainId,
+    1313161555,
     // chainDict[dappConfig.chainId].rpc,
-    "http://localhost:8545",
+    "https://testnet.aurora.dev",
     {
         autonnect: false,
         switchNetwork: true,

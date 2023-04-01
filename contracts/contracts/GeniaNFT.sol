@@ -11,10 +11,9 @@ contract GenIA_NFT is ERC721, Ownable {
     using Strings for uint256;
 
     mapping (uint256 => string) private _tokenURIs;
-    mapping (address => uint256) public nftNum;
 
     string private _baseURIextended;
-    Counters.Counter private _tokenIds;
+    Counters.Counter public _tokenIds;
 
     constructor()
         ERC721("GenIANFT", "GENFT")
@@ -53,22 +52,16 @@ contract GenIA_NFT is ERC721, Ownable {
 
         approve(_to, tokenId);
         transferFrom(msg.sender, _to, tokenId);
-        nftNum[msg.sender]--;
-        nftNum[_to]++;
+
         return true;
     }
-
-    function getNum(address _target) external view  returns(address) {
-        return nftNum[_target];
-    }
-    
 
     function mint(
         address _to,
         string memory tokenURI_
     ) external returns(uint256){
         _tokenIds.increment();
-        nftNum[_to]++;
+        
         uint256 newItemId = _tokenIds.current();
         _mint(_to, newItemId);
         _setTokenURI(newItemId, tokenURI_);

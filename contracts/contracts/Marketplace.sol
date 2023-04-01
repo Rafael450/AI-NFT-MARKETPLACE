@@ -28,6 +28,8 @@ contract MarketPlace is ChainlinkClient {
     GENIA public GenIA;
     GENFT public GeNFT;
 
+    uint256 public price;
+
     // Chainlink Variables
     address private oracleAddress;
     bytes32 private jobIdNumber;
@@ -50,7 +52,7 @@ contract MarketPlace is ChainlinkClient {
     }
 
     function CreateURI() internal view returns(string memory) {
-        return string(abi.encodePacked(abi.encodePacked(msg.sender), abi.encodePacked(GeNFT.getNum(msg.sender))));
+        return string(abi.encodePacked("www.link-exemplo.com/",abi.encodePacked(msg.sender), abi.encodePacked(GeNFT.getNum(msg.sender))));
     }
 
     function SendPrompt(string memory _prompt) public {
@@ -62,6 +64,7 @@ contract MarketPlace is ChainlinkClient {
 
         
         GeNFT.mint(msg.sender, CreateURI());
+        GenIA.burn(price);
 
         req.add("get", _prompt);
 

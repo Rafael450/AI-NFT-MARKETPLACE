@@ -11,14 +11,14 @@ interface GENIA {
     function allowance(address owner, address spender) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
     function approve(address spender, uint256 amount) external returns (bool);
-    function burn(uint256 amount) external returns (bool);
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    function burn(address _account,uint256 amount) external payable returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external  returns (bool);
 }
 
 interface GENFT {
-    function mint(address to, string memory tokenURI_) external view returns (uint256);
+    function mint(address to, string memory tokenURI_) external payable returns (uint256);
     function transfer(address to, uint256 _tokenId) external returns (bool);
-    function getNum(address _target) external view returns(address);
+    function getTotalTokens() external view returns(uint256);
 }
 
 contract MarketPlace is ChainlinkClient {
@@ -43,32 +43,36 @@ contract MarketPlace is ChainlinkClient {
     constructor(
         address _tokenContract,
         address _NFTContract,
-        address _oracleAddress) {
+        address _oracleAddress,
+        uint256 _price) {
 
         oracleAddress = _oracleAddress;
+        price = _price;
         GenIA = GENIA(_tokenContract);
         GeNFT = GENFT(_NFTContract);
         
     }
 
     function CreateURI() internal view returns(string memory) {
-        return string(abi.encodePacked("www.link-exemplo.com/",abi.encodePacked(msg.sender), abi.encodePacked(GeNFT.getNum(msg.sender))));
+        uint256 total = GeNFT.getTotalTokens();
+        return string(abi.encodePacked("www.link-exemplo.com/", total.toString()));
     }
 
-    function SendPrompt(string memory _prompt) public {
-        Chainlink.Request memory req = buildChainlinkRequest(
-            jobIdNumber,
-            address(this),
-            this.fulfillPrompt.selector
-        );
+    function SendPrompt(string memory _prompt) public payable {
+        // Chainlink.Request memory req = buildChainlinkRequest(
+        //     jobIdNumber,
+        //     address(this),
+        //     this.fulfillPrompt.selector
+        // );
 
         
         GeNFT.mint(msg.sender, CreateURI());
-        GenIA.burn(price);
+        GenIA.burn(msg.sender, price);
 
-        req.add("get", _prompt);
+        // req.add("get", _prompt);
 
-        bytes32 request = sendOperatorRequest(req, fee);
+        // bytes32 request = sendOperatorRequest(req, fee);
+        bytes32 request = bytes32(0);
 
         emit PromptSent(request);
     }

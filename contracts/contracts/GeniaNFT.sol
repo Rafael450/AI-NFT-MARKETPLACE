@@ -3,17 +3,15 @@
 pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 
 contract GenIA_NFT is ERC721, Ownable {
-    using Counters for Counters.Counter;
     using Strings for uint256;
 
     mapping (uint256 => string) private _tokenURIs;
 
     string private _baseURIextended;
-    Counters.Counter public _tokenIds;
+    uint256 public _tokenIds = 0 ;
 
     constructor()
         ERC721("GenIANFT", "GENFT")
@@ -30,6 +28,10 @@ contract GenIA_NFT is ERC721, Ownable {
     
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseURIextended;
+    }
+
+    function getTotalTokens() external view returns(uint256) {
+        return _tokenIds;
     }
     
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -59,12 +61,10 @@ contract GenIA_NFT is ERC721, Ownable {
     function mint(
         address _to,
         string memory tokenURI_
-    ) external returns(uint256){
-        _tokenIds.increment();
-        
-        uint256 newItemId = _tokenIds.current();
-        _mint(_to, newItemId);
-        _setTokenURI(newItemId, tokenURI_);
-        return newItemId;
+    ) external payable returns(uint256){
+        _tokenIds++;
+        _mint(_to, _tokenIds);
+        _setTokenURI(_tokenIds, tokenURI_);
+        return _tokenIds;
     }
 }

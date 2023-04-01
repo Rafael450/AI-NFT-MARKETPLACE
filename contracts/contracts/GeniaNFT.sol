@@ -5,11 +5,14 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+
 contract GenIA_NFT is ERC721, Ownable {
     using Counters for Counters.Counter;
     using Strings for uint256;
 
     mapping (uint256 => string) private _tokenURIs;
+    mapping (address => uint256) public nftNum;
+
     string private _baseURIextended;
     Counters.Counter private _tokenIds;
 
@@ -44,13 +47,28 @@ contract GenIA_NFT is ERC721, Ownable {
         }
         return string(abi.encodePacked(base, tokenId.toString()));
     }
+
+    function transfer(address _to, uint256 tokenId) public returns (bool) {
+        require(_exists(tokenId), "This token does not exists");
+
+        approve(_to, tokenId);
+        transferFrom(msg.sender, _to, tokenId);
+        nftNum[msg.sender]--;
+        nftNum[_to]++;
+        return true;
+    }
+
+    function getNum(address _target) external view  returns(address) {
+        return nftNum[_target];
+    }
     
 
     function mint(
         address _to,
         string memory tokenURI_
-    ) external onlyOwner() returns(uint256){
+    ) external returns(uint256){
         _tokenIds.increment();
+        nftNum[_to]++;
         uint256 newItemId = _tokenIds.current();
         _mint(_to, newItemId);
         _setTokenURI(newItemId, tokenURI_);

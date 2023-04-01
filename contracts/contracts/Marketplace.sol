@@ -3,6 +3,8 @@
 pragma solidity ^0.8.17;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 
 interface GENIA {
     function balanceOf(address account) external view returns (uint256);
@@ -15,12 +17,16 @@ interface GENIA {
 
 interface GENFT {
     function mint(address to, string memory tokenURI_) external view returns (uint256);
+    function transfer(address to, uint256 _tokenId) external returns (bool);
+    function getNum(address _target) external view returns(address);
 }
 
 contract MarketPlace is ChainlinkClient {
     using Chainlink for Chainlink.Request;
+    using Strings for uint256;
 
     GENIA public GenIA;
+    GENFT public GeNFT;
 
     // Chainlink Variables
     address private oracleAddress;
@@ -34,10 +40,17 @@ contract MarketPlace is ChainlinkClient {
     
     constructor(
         address _tokenContract,
+        address _NFTContract,
         address _oracleAddress) {
 
         oracleAddress = _oracleAddress;
-        GenAI = GENAI(_tokenContract);
+        GenIA = GENIA(_tokenContract);
+        GeNFT = GENFT(_NFTContract);
+        
+    }
+
+    function CreateURI() internal view returns(string memory) {
+        return string(abi.encodePacked(abi.encodePacked(msg.sender), abi.encodePacked(GeNFT.getNum(msg.sender))));
     }
 
     function SendPrompt(string memory _prompt) public {
@@ -47,11 +60,14 @@ contract MarketPlace is ChainlinkClient {
             this.fulfillPrompt.selector
         );
 
-       req.add("get", _prompt);
+        
+        GeNFT.mint(msg.sender, CreateURI());
 
-       bytes32 request = sendOperatorRequest(req, fee);
+        req.add("get", _prompt);
 
-       emit PromptSent(request);
+        bytes32 request = sendOperatorRequest(req, fee);
+
+        emit PromptSent(request);
     }
 
     function fulfillPrompt(

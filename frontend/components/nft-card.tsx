@@ -18,7 +18,19 @@ export default function NftCard(props: any) {
                 size={200}
             />
             <div
-                style={{
+                style={props.mode == 1 ? {
+                    marginTop: "30px",
+                    marginBottom: "80px",
+                    display: "flex",
+                    background: "#fff",
+                    height: "70px",
+                    width: "330px",
+                    borderRadius: "5px",
+                    color: "black",
+                    fontSize: "1.5rem",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                } : {
                     marginTop: "30px",
                     marginBottom: "80px",
                     display: "flex",
@@ -32,13 +44,13 @@ export default function NftCard(props: any) {
                     justifyContent: "space-between"
                 }}
             >
-                <span style={{marginLeft: "15px"}}>GenIA: _________</span>
+                <span style={{ marginLeft: "15px" }}>GenIA: _________</span>
                 <Button
                     ariaLabel="sell"
                     className="button"
-                    color="white"
-                    txtColor="black"
-                    value="Buy"
+                    color={props.mode == 1 ? "black" : "white"}
+                    txtColor={props.mode == 1 ? "white" : "black"}
+                    value={props.mode == 1 ? "Sell" : "Buy"}
                     variant="solid"
                     action={() => alert("teste")}
                     style={{

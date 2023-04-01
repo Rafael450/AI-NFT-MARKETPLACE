@@ -11,11 +11,14 @@ import LogoPreta from "../imgs/GenIALogoPreta.png"
 import genia1 from "../imgs/genIA1.webp"
 import genia2 from "../imgs/genIA2.webp"
 import genia3 from "../imgs/genIA3.png"
+import { isMainThread } from "worker_threads";
 
 export default function Home() {
 
   const { connected } = useWeb3();
   const [isConnectModal, setConnectModal] = useState(false);
+  const [isMyCollection, setMyCollection] = useState(false)
+
   return (
     <Container>
       <Head>
@@ -33,13 +36,16 @@ export default function Home() {
         {/* <BrandName>AI NFT Marketplace</BrandName> */}
         {connected &&
           <Button
-            ariaLabel="Connect"
+            ariaLabel="mycollection"
             className="button"
-            color="white"
+            color={isMyCollection ?  "grey150" : "white"}
             txtColor="black"
             value="My Collection"
             variant="solid"
-            action={() => setConnectModal(true)}
+            action={() => {
+              setMyCollection(!isMyCollection)
+              console.log(isMyCollection)
+            }}
             style={{
               margin: "2px"
             }}
@@ -77,7 +83,7 @@ export default function Home() {
       </NavBar>
       {isConnectModal && <ConnectModal onClose={() => setConnectModal(false)} />}
       <Main>
-        <Container
+        {!isMyCollection && <Container
           style={{
             display: "flex",
             alignItems: "flex-start",
@@ -86,10 +92,10 @@ export default function Home() {
           }}
         >
           <img src={LogoBranca.src} alt="logo" style={{ height: "100px" }} />
-        </Container>
+        </Container>}
         {!connected && <Container
           style={{
-            height: "55%",
+            height: "800px",
             width: "95%",
             margin: "0 auto",
             display: "flex",
@@ -181,9 +187,9 @@ export default function Home() {
             </Container>
           </Container>
         </Container>}
-        {connected && <Content
+        {connected && !isMyCollection && <Content
           style={{
-            height: "55%",
+            height: "800px",
             justifyContent: "flex-start",
             paddingTop: "100px"
           }}
@@ -230,7 +236,8 @@ export default function Home() {
             }}
           />
         </Content>}
-        <NftSlider />
+        {!isMyCollection && <NftSlider title="NFT Marketplace"/>}
+        {isMyCollection && <NftSlider title="My Collection"/>}
       </Main>
     </Container>
   );

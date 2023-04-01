@@ -4,20 +4,32 @@ import NftCard from "./nft-card"
 
 let array_imgs: { [key: string]: string }[] = [
     { "url": "a" }, { "url": "b" }, { "url": "c" },
-    { "url": "d" }, { "url": "e" }, { "url": "f" }, 
+    { "url": "d" }, { "url": "e" }, { "url": "f" },
 ]
 
-export default function NftSlider() {
+export default function NftSlider(props: any) {
+
+    let mode = props.title == "My Collection" ?  1 :  2
+
     return (
         <Container
-            style={{
+            style={mode == 1 ? 
+            {
+                background: "black",
+                color: "#41424c",
+                textAlign: "center",
+                height: "70%"
+            }
+            : {
                 background: "white",
                 color: "#41424c",
                 textAlign: "center",
                 height: "70%"
             }}
         >
-            <Title style={{ marginTop: "50px", fontSize: "40px" }}>NFT Marketplace</Title>
+            <Title style={ mode == 1 ?
+                { marginTop: "50px", fontSize: "40px", color: "white" } : { marginTop: "50px", fontSize: "40px" }}
+            >{props.title}</Title>
             <Container
                 style={{
                     display: "grid",
@@ -28,7 +40,7 @@ export default function NftSlider() {
             >
                 {array_imgs.map(i => {
                     return (
-                        <NftCard nft={i}/>
+                        <NftCard mode = {mode} nft = {i} />
                     )
                 })}
             </Container>

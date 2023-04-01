@@ -14,7 +14,6 @@ export const Main = styled.div`
 export const NavBar = styled.div`
   color: #fff !important;
   padding: 15px;
-  margin-left: 10px;
   border-bottom: 1px solid #eee;
   font-size: 1.2rem;
   font-weight: 600;

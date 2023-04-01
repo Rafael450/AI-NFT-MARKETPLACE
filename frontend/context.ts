@@ -4,8 +4,6 @@ import React from 'react';
 import { chainDict } from "./constants/networks";
 import { dappConfig } from "./config";
 
-console.log(dappConfig);
-
 export const defaulDappkitProvider = new DappkitReactProvider(
     dappConfig.chainId,
     // 1313161555,

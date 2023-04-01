@@ -1,10 +1,12 @@
 import Head from "next/head";
 import { Button, TextField } from "@taikai/rocket-kit";
 import { useWeb3 } from "../hooks/useWeb3";
-import { Container, Main, NavBar, BrandName, Menu , Footer, Title, SubTitle, Content}  from "../styles/home";
+import { Container, Main, NavBar, BrandName, Menu, Footer, Title, SubTitle, Content } from "../styles/home";
 import ConnectModal from "../components/connect-wallet-modal";
+import TextCard from "@/components/text-card";
 import React, { useState } from 'react';
-import ClickableEthAddress  from "../components/clickable-eth-address";
+import ClickableEthAddress from "../components/clickable-eth-address";
+import NftSlider from "@/components/connect-wallet-modal/nft-slider";
 
 export default function Home() {
 
@@ -18,24 +20,39 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar 
+      <NavBar
         style={{
-          color: "#FFF", 
+          color: "#FFF",
           display: "flex",
-          background: "white"}}>
+          background: "white"
+        }}>
         {/* <BrandName>AI NFT Marketplace</BrandName> */}
+        {connected &&
+          <Button
+            ariaLabel="Connect"
+            className="button"
+            color="white"
+            txtColor="black"
+            value="My Collection"
+            variant="solid"
+            action={() => setConnectModal(true)}
+            style={{
+              margin: "2px"
+            }}
+          />
+        }
         <Button
-              ariaLabel="BuyTokens"
-              className="button"
-              value="Buy Tokens"
-              color="white"
-              txtColor="black"
-              variant="solid"
-              action={()=> setConnectModal(true)}
-              style={{
-                margin: "2px"
-              }}
-            />
+          ariaLabel="BuyTokens"
+          className="button"
+          value="Buy GenIA"
+          color="white"
+          txtColor="black"
+          variant="solid"
+          action={() => setConnectModal(true)}
+          style={{
+            margin: "2px"
+          }}
+        />
         <Menu>
           {!connected && (
             <Button
@@ -45,34 +62,42 @@ export default function Home() {
               txtColor="black"
               value="Connect your wallet"
               variant="solid"
-              action={()=> setConnectModal(true)}
+              action={() => setConnectModal(true)}
               style={{
                 margin: "2px"
               }}
             />
           )}
-          {connected && <ClickableEthAddress onClick={()=> setConnectModal(true)}/>}
+          {connected && <ClickableEthAddress onClick={() => setConnectModal(true)} />}
         </Menu>
       </NavBar>
-      {isConnectModal && <ConnectModal onClose={()=> setConnectModal(false)}/>}
+      {isConnectModal && <ConnectModal onClose={() => setConnectModal(false)} />}
       <Main>
-        <Content>
-          <Title>Give wings to your horses!</Title>
+        <Content
+          style={{
+            height: "43%",
+            justifyContent: "flex-start",
+            padding: "200px"
+          }}
+        >
           <Title
-            style={{marginBottom: "20px"}}
+            style={{ fontWeight: "600" }}
+          >Give wings to your horses!</Title>
+          <Title
+            style={{ marginBottom: "20px", fontWeight: "600" }}
           >Be bold. Be wild. Be GenIA.</Title>
           <TextField
             name="generate-prompt"
-            onChange={function noRefCheck(){}}
+            onChange={function noRefCheck() { }}
             placeholder="Generate Image w/ Prompt"
             type="text"
             style={{
-              background: "white", 
-              width: "700px", 
+              background: "white",
+              width: "800px",
               height: "50px",
-              color: "#41424c", 
-              textAlign: "center", 
-              borderRadius: "10px",
+              color: "#41424c",
+              textAlign: "center",
+              borderRadius: "20px",
               fontSize: "20px",
               fontWeight: "bold",
               fontFamily: "sans-serif"
@@ -80,19 +105,21 @@ export default function Home() {
             max={10}
           />
           <Button
-              ariaLabel="generate"
-              className="button"
-              value="Generate"
-              color="black"
-              txtColor="white"
-              variant="solid"
-              action={()=> setConnectModal(true)}
-              style={{
-                margin: "2px",
-                fontWeight: "bold"
-              }}
-            />
-        </Content>        
+            ariaLabel="generate"
+            className="button"
+            value="Generate"
+            color="black"
+            txtColor="white"
+            variant="solid"
+            action={() => setConnectModal(true)}
+            style={{
+              margin: "2px",
+              fontWeight: "bold"
+            }}
+          />
+        </Content>
+        <NftSlider />
+        <TextCard/>
       </Main>
     </Container>
   );

@@ -4,11 +4,13 @@ import React from 'react';
 import { chainDict } from "./constants/networks";
 import { dappConfig } from "./config";
 
+console.log(dappConfig);
+
 export const defaulDappkitProvider = new DappkitReactProvider(
-    // dappConfig.chainId,
-    1313161555,
-    // chainDict[dappConfig.chainId].rpc,
-    "https://testnet.aurora.dev",
+    dappConfig.chainId,
+    // 1313161555,
+    chainDict[dappConfig.chainId].rpc,
+    // "https://testnet.aurora.dev",
     {
         autonnect: false,
         switchNetwork: true,

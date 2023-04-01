@@ -25,11 +25,10 @@ contract MarketPlace is ChainlinkClient {
 
         oracleAddress = _oracleAddress;
         jobIdNumber = _jobIdNumber;
-        
     }
 
     function CreatePrompt(uint256 _id, string memory _prompt) public pure returns(string memory) {
-        return string(abi.encodePacked(_id.toString(), "&", _prompt));
+        return string(abi.encodePacked("link.com/" ,_id.toString(), "&", _prompt));
     }
 
     function SendPrompt(string memory _prompt, uint256 _id) public payable {
@@ -40,6 +39,8 @@ contract MarketPlace is ChainlinkClient {
         );
 
         req.add("get", CreatePrompt(_id, _prompt));
+        req.add("multiply", "1");
+        req.add("path", "");
 
         bytes32 request = sendOperatorRequest(req, fee);
 

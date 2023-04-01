@@ -51,9 +51,6 @@ contract MarketPlace{
     function SendPrompt(string memory _prompt) public payable {
        
         GeNFT.mint(msg.sender, CreateURI());
-        GeNFT.mint(msg.sender, CreateURI());
-        GeNFT.mint(msg.sender, CreateURI());
-        GeNFT.mint(msg.sender, CreateURI());
 
         GenIA.burn(msg.sender, promptPrice);
 

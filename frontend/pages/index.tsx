@@ -81,55 +81,73 @@ export default function Home() {
             height: "100px"
           }}
         >
-          <img src={LogoBranca.src} alt="logo" style={{height: "100px"}}/>
+          <img src={LogoBranca.src} alt="logo" style={{ height: "100px" }} />
         </Container>
-      {!connected && <Container
+        {!connected && <Container
           style={{
-            textAlign: "center",
             height: "55%",
             width: "80%",
             margin: "0 auto"
           }}
         >
-          <Title style={{ fontWeight: "500", fontSize: "3rem", marginBottom: "50px" }}>
-            Mint your own NFT using AI to fuel your imagination.<br></br>
-            You can purchase our tokens tax-free and earn more by selling your art.
-          </Title>
-          <Title style={{ fontWeight: "500", fontSize: "3rem" }}>
-            Each GenIA token can generate up to 4 images, which can be minted as
-            NFTs and sold at our Marketplace. Let your imagination run wild!
-          </Title>
           <Container
-            style={{
-              height: "100%",
-              justifyContent: "space-between",
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "70px",
-              alignItems: "center"
-            }}
+            style={{ width: "40%", textAlign: "left" }}
           >
-            <Button
-              ariaLabel="Connect"
-              className="button"
-              color="white"
-              rounded
-              txtColor="black"
-              value="Try GenIA"
-              variant="solid"
-              action={() => setConnectModal(true)}
+            <Title style={{ fontWeight: "500", fontSize: "2.5rem", marginBottom: "50px" }}>
+              Mint your own NFT using AI to fuel your imagination.
+              You can purchase our tokens tax-free and earn more by selling your art.
+            </Title>
+            <Title style={{ fontWeight: "500", fontSize: "2.5rem" }}>
+              Each GenIA token can generate up to 4 images, which can be minted as
+              NFTs and sold at our Marketplace. Let your imagination run wild!
+            </Title>
+            <Container
+              style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}
+            >
+              <Button
+                ariaLabel="Connect"
+                className="button"
+                color="red400"
+                rounded
+                txtColor="oracle100"
+                value="Try GenIA"
+                variant="solid"
+                action={() => setConnectModal(true)}
+                style={{
+                  marginTop: "20px",
+                  height: "70px",
+                  width: "140px",
+                  fontSize: "10rem"
+                }}
+              />
+              <Container style={{
+                marginTop: "20px",
+                display: "flex",
+                flexDirection: "row",
+                fontSize: "2.5rem",
+                height: "70px",
+                alignItems: "center",
+                lineHeight: "70px"
+              }}>
+                Follow us
+                <Icon style={{ height: "50px", marginLeft: "20px" }} icon="instagram-n" fill="#fff" />
+                <Icon style={{ height: "50px" }} icon="twitter-n" fill="#fff" />
+              </Container>
+            </Container>
+          </Container>
+          <Container
+            style={{ width: "50%" }}
+          >
+            <Container
               style={{
-                margin: "2px",
-                height: "80px",
-                width: "160px",
-                fontSize: "10rem"
+                height: "100%",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "row",
+                marginTop: "70px",
+                alignItems: "center"
               }}
-            />
-            <Container style={{display: "flex", flexDirection: "row", fontSize: "70px", height: "70px", alignItems: "center", lineHeight: "70px"}}>
-              Follow us
-              <Icon style={{height: "50px", marginLeft: "20px"}} icon="instagram-n" fill="#fff"/>
-              <Icon style={{height: "50px"}} icon="discord-n" fill="#fff"/>
-              <Icon style={{height: "50px"}} icon="twitter-n" fill="#fff"/>
+            >
             </Container>
           </Container>
         </Container>}

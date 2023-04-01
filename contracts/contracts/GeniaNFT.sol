@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Example is ERC721, Ownable {
+contract GenIA_NFT is ERC721, Ownable {
     using Counters for Counters.Counter;
     using Strings for uint256;
 
@@ -14,7 +14,7 @@ contract Example is ERC721, Ownable {
     Counters.Counter private _tokenIds;
 
     constructor()
-        ERC721("GenAINFT", "GENFT")
+        ERC721("GenIANFT", "GENFT")
     {}
     
     function setBaseURI(string memory baseURI_) external onlyOwner() {

@@ -5,9 +5,9 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-contract GenAI is IERC20 {
-    string public constant name = "GenAI";
-    string public constant symbol = "GENAI";
+contract GenIA_Token is IERC20 {
+    string public constant name = "GenIA";
+    string public constant symbol = "GENIA";
     uint8 public constant decimals = 18;
     uint256 private totalSupply;
 

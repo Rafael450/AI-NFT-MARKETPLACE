@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-interface GENAI {
+interface GENIA {
     function balanceOf(address account) external view returns (uint256);
     function allowance(address owner, address spender) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
@@ -13,10 +13,14 @@ interface GENAI {
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 }
 
+interface GENFT {
+    function mint(address to, string memory tokenURI_) external view returns (uint256);
+}
+
 contract MarketPlace is ChainlinkClient {
     using Chainlink for Chainlink.Request;
 
-    GENAI public GenAI;
+    GENIA public GenIA;
 
     // Chainlink Variables
     address private oracleAddress;

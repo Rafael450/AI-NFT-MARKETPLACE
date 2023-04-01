@@ -6,7 +6,8 @@ import { dappConfig } from "./config";
 
 export const defaulDappkitProvider = new DappkitReactProvider(
     dappConfig.chainId,
-    chainDict[dappConfig.chainId].rpc,
+    // chainDict[dappConfig.chainId].rpc,
+    "http://localhost:8545",
     {
         autonnect: false,
         switchNetwork: true,

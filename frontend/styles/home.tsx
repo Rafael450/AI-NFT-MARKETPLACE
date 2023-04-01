@@ -12,6 +12,7 @@ export const Main = styled.div`
 `;
 
 export const NavBar = styled.div`
+  color: #fff !important;
   padding: 15px;
   margin-left: 10px;
   border-bottom: 1px solid #eee;
@@ -19,7 +20,7 @@ export const NavBar = styled.div`
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
 `;
 
 export const BrandName = styled.div`

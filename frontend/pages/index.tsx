@@ -8,6 +8,9 @@ import ClickableEthAddress from "../components/clickable-eth-address";
 import NftSlider from "@/components/nft-slider";
 import LogoBranca from "../imgs/GenIALogoBranca.png"
 import LogoPreta from "../imgs/GenIALogoPreta.png"
+import genia1 from "../imgs/genIA1.webp"
+import genia2 from "../imgs/genIA2.webp"
+import genia3 from "../imgs/genIA3.png"
 
 export default function Home() {
 
@@ -42,7 +45,7 @@ export default function Home() {
             }}
           />
         }
-        <Button
+        {connected && <Button
           ariaLabel="BuyTokens"
           className="button"
           value="Buy GenIA"
@@ -53,7 +56,7 @@ export default function Home() {
           style={{
             margin: "2px"
           }}
-        />
+        />}
         <Menu>
           {!connected && (
             <Button
@@ -78,7 +81,8 @@ export default function Home() {
           style={{
             display: "flex",
             alignItems: "flex-start",
-            height: "100px"
+            height: "100px",
+            marginBottom: "40px"
           }}
         >
           <img src={LogoBranca.src} alt="logo" style={{ height: "100px" }} />
@@ -86,8 +90,10 @@ export default function Home() {
         {!connected && <Container
           style={{
             height: "55%",
-            width: "80%",
-            margin: "0 auto"
+            width: "95%",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "row"
           }}
         >
           <Container
@@ -136,18 +142,42 @@ export default function Home() {
             </Container>
           </Container>
           <Container
-            style={{ width: "50%" }}
+            style={{ 
+              width: "50%",
+              marginLeft: "10%",
+              height: "600px",
+              justifyContent: "space-between",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
           >
             <Container
               style={{
-                height: "100%",
-                justifyContent: "space-between",
-                display: "flex",
-                flexDirection: "row",
-                marginTop: "70px",
-                alignItems: "center"
+                height: "33%",
+                width: "50%",
+                position: "relative"
               }}
             >
+              <img src={genia1.src} alt="genia1" style={{height:"400px", width: "400px", position: "absolute", bottom: "-130px"}}></img>
+            </Container>
+            <Container
+              style={{
+                height: "33%",
+                width: "100%",
+                alignItems: "flex-end"
+              }}
+            >
+              <img src={genia2.src} alt="genia2" style={{height:"350px", width: "350px"}}></img>
+            </Container>
+            <Container
+              style={{
+                height: "33%",
+                width: "100%",
+                position: "relative"
+              }}
+            >
+              <img src={genia3.src} alt="genia3" style={{height:"350px", width: "350px", position: "absolute", bottom: "0"}}></img>
             </Container>
           </Container>
         </Container>}
@@ -185,14 +215,18 @@ export default function Home() {
           <Button
             ariaLabel="generate"
             className="button"
+
             value="Generate"
-            color="black"
-            txtColor="white"
+            color="red400"
+            txtColor="oracle100"
+            rounded
             variant="solid"
             action={() => setConnectModal(true)}
             style={{
-              margin: "2px",
-              fontWeight: "bold"
+              marginTop: "20px",
+              height: "70px",
+              width: "140px",
+              fontSize: "10rem"
             }}
           />
         </Content>}

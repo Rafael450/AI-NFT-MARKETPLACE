@@ -1,5 +1,6 @@
 import { AvatarImage } from "@taikai/rocket-kit"
 import { Container, Title } from "@/styles/home"
+import NftCard from "./nft-card"
 
 let array_imgs: { [key: string]: string }[] = [
     { "url": "a" }, { "url": "b" }, { "url": "c" },
@@ -27,22 +28,7 @@ export default function NftSlider() {
             >
                 {array_imgs.map(i => {
                     return (
-                        <Container
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                            }}
-                        >
-                            <AvatarImage
-                                style={{
-                                    width: "calc(33.33 % - 10px)",
-                                    marginRight: "10px"
-                                }}
-                                size={200}
-                            />
-                            <p style={{fontWeight: "500", fontSize: "40px"}}>{`NFT ${i["url"]}`}</p>
-                        </Container>
+                        <NftCard nft={i}/>
                     )
                 })}
             </Container>

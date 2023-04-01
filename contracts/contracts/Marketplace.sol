@@ -5,7 +5,6 @@ pragma solidity ^0.8.17;
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-
 interface GENIA {
     function balanceOf(address account) external view returns (uint256);
     function allowance(address owner, address spender) external view returns (uint256);
@@ -21,33 +20,24 @@ interface GENFT {
     function getTotalTokens() external view returns(uint256);
 }
 
-contract MarketPlace is ChainlinkClient {
-    using Chainlink for Chainlink.Request;
+contract MarketPlace{
     using Strings for uint256;
 
     GENIA public GenIA;
     GENFT public GeNFT;
 
-    uint256 public price;
+    uint256 public promptPrice;
 
-    // Chainlink Variables
-    address private oracleAddress;
-    bytes32 private jobIdNumber;
-    uint256 private fee;
-
-    // Chainlink Events
-    event PromptSent(bytes32 indexed requestId);
-    event PromptRequestFulfilled(bytes32 indexed requestId, bool result);
+    // Bridge Events
+    event activateBridgeToPolygon(uint256 indexed sent, string prompt);
 
     
     constructor(
         address _tokenContract,
         address _NFTContract,
-        address _oracleAddress,
-        uint256 _price) {
+        uint256 _promptPrice) {
 
-        oracleAddress = _oracleAddress;
-        price = _price;
+        promptPrice = _promptPrice;
         GenIA = GENIA(_tokenContract);
         GeNFT = GENFT(_NFTContract);
         
@@ -59,30 +49,15 @@ contract MarketPlace is ChainlinkClient {
     }
 
     function SendPrompt(string memory _prompt) public payable {
-        // Chainlink.Request memory req = buildChainlinkRequest(
-        //     jobIdNumber,
-        //     address(this),
-        //     this.fulfillPrompt.selector
-        // );
-
-        
+       
         GeNFT.mint(msg.sender, CreateURI());
-        GenIA.burn(msg.sender, price);
+        GeNFT.mint(msg.sender, CreateURI());
+        GeNFT.mint(msg.sender, CreateURI());
+        GeNFT.mint(msg.sender, CreateURI());
 
-        // req.add("get", _prompt);
+        GenIA.burn(msg.sender, promptPrice);
 
-        // bytes32 request = sendOperatorRequest(req, fee);
-        bytes32 request = bytes32(0);
-
-        emit PromptSent(request);
+        emit activateBridgeToPolygon(GeNFT.getTotalTokens(), _prompt);
     }
-
-    function fulfillPrompt(
-        bytes32 requestId,
-        bool _result
-    ) public recordChainlinkFulfillment(requestId) {
-        emit PromptRequestFulfilled(requestId, _result);
-    }
-
 
 }

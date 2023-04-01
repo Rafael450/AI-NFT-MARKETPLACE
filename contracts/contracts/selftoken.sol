@@ -63,15 +63,4 @@ contract GenAI is IERC20 {
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
-
-    function SendPrompt(string memory _prompt) public {
-        Chainlink.Request memory req = buildChainlinkRequest(
-            jobIdMultipleNumbers,
-            address(this),
-            this.fulfillResults.selector
-        );
-
-    }
-
-
 }

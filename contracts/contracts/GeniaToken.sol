@@ -1,70 +1,78 @@
 // SPDX-License-Identifier: UNLICENSED
 
 pragma solidity ^0.8.17;
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract GenIA_NFT is ERC721, Ownable {
-    using Strings for uint256;
+contract GenIA_Token is IERC20 {
+    string public constant name = "GenIA";
+    string public constant symbol = "GENIA";
+    uint8 public constant decimals = 18;
+    uint256 private totalSupplyVar;
 
-    mapping (uint256 => string) private _tokenURIs;
+    mapping(address => uint256) private balances;
+    mapping(address => mapping(address => uint256)) private allowances;
 
-    string private _baseURIextended;
-    uint256 public _tokenIds = 0 ;
-
-    constructor()
-        ERC721("GenIANFT", "GENFT")
-    {}
-    
-    function setBaseURI(string memory baseURI_) external onlyOwner() {
-        _baseURIextended = baseURI_;
-    }
-    
-    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
-        require(_exists(tokenId), "This token does not exists");
-        _tokenURIs[tokenId] = _tokenURI;
-    }
-    
-    function _baseURI() internal view virtual override returns (string memory) {
-        return _baseURIextended;
+    constructor(uint256 _initialSupply) {
+        totalSupplyVar = _initialSupply;
+        balances[msg.sender] = _initialSupply;
+        emit Transfer(address(0), msg.sender, _initialSupply);
     }
 
-    function getTotalTokens() external view returns(uint256) {
-        return _tokenIds;
-    }
-    
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        require(_exists(tokenId), "This token does not exists");
-
-        string memory _tokenURI = _tokenURIs[tokenId];
-        string memory base = _baseURI();
-        
-        if (bytes(base).length == 0) {
-            return _tokenURI;
-        }
-        if (bytes(_tokenURI).length > 0) {
-            return string(abi.encodePacked(base, _tokenURI));
-        }
-        return string(abi.encodePacked(base, tokenId.toString()));
+    function totalSupply() external view override returns (uint256) {
+        return totalSupplyVar;
     }
 
-    function transfer(address _to, uint256 tokenId) public returns (bool) {
-        require(_exists(tokenId), "This token does not exists");
+    function balanceOf(address account) external view override returns (uint256) {
+        return balances[account];
+    }
 
-        approve(_to, tokenId);
-        transferFrom(msg.sender, _to, tokenId);
-
+    function transfer(address recipient, uint256 amount) external override returns (bool) {
+        _transfer(msg.sender, recipient, amount);
         return true;
     }
 
-    function mint(
-        address _to,
-        string memory tokenURI_
-    ) external payable returns(uint256){
-        _tokenIds++;
-        _mint(_to, _tokenIds);
-        _setTokenURI(_tokenIds, tokenURI_);
-        return _tokenIds;
+    function approve(address spender, uint256 amount) external override returns (bool) {
+        _approve(msg.sender, spender, amount);
+        return true;
+    }
+
+    function allowance(address owner, address spender) external view override returns (uint256) {
+        return allowances[owner][spender];
+    }
+
+    function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
+        _transfer(sender, recipient, amount);
+        _approve(sender, msg.sender, allowances[sender][msg.sender] - amount);
+        return true;
+    }
+
+    function burn(address _account, uint256 _amount) external payable returns(bool) {
+        _burn(_account, _amount);
+        return true;
+    }
+
+    function _transfer(address _sender, address _recipient, uint256 _amount) private {
+        require(_sender != address(0), "transfer from the zero address");
+        require(_recipient != address(0), "transfer to the zero address");
+        require(balances[_sender] >= _amount, "transfer amount exceeds balance");
+        balances[_sender] -= _amount;
+        balances[_recipient] += _amount;
+        emit Transfer(_sender, _recipient, _amount);
+    }
+
+    function _approve(address _owner, address _spender, uint256 _amount) private {
+        require(_owner != address(0), "approve from the zero address");
+        require(_spender != address(0), "approve to the zero address");
+        allowances[_owner][_spender] = _amount;
+        emit Approval(_owner, _spender, _amount);
+    }
+
+    function _burn(address _account, uint256 _amount) internal {
+        require(_account != address(0), "burn from the zero address");
+        require(balances[_account] >= _amount, "burn amount exceeds balance");
+        balances[_account] -= _amount;
+        totalSupplyVar -= _amount;
+        emit Transfer(_account, address(0), _amount);
     }
 }

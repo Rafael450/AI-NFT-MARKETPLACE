@@ -13,39 +13,33 @@ contract MarketPlace is ChainlinkClient {
     // Chainlink Variables
     address private oracleAddress;
     bytes32 private jobIdNumber;
-    uint256 private fee;
+    uint256 private fee = (1 * LINK_DIVISIBILITY) / 10;
 
     // Chainlink Events
     event PromptSent(bytes32 indexed requestId);
-    event PromptRequestFulfilled(bytes32 indexed requestId, bool result);
+    event PromptRequestFulfilled(bytes32 indexed requestId, uint256 result);
     
     constructor(
         address _oracleAddress,
-        bytes32 _jobIdNumber,
-        uint256 _price) {
+        bytes32 _jobIdNumber) {
 
         oracleAddress = _oracleAddress;
         jobIdNumber = _jobIdNumber;
         
     }
 
-    function CreateURI() internal view returns(string memory) {
-        uint256 total = GeNFT.getTotalTokens();
-        return string(abi.encodePacked("www.link-exemplo.com/", total.toString()));
+    function CreatePrompt(uint256 _id, string memory _prompt) public pure returns(string memory) {
+        return string(abi.encodePacked(_id.toString(), "%", _prompt));
     }
 
-    function SendPrompt(string memory _prompt) public payable {
+    function SendPrompt(string memory _prompt, uint256 _id) public payable {
         Chainlink.Request memory req = buildChainlinkRequest(
             jobIdNumber,
             address(this),
             this.fulfillPrompt.selector
         );
 
-        
-        GeNFT.mint(msg.sender, CreateURI());
-        GenIA.burn(msg.sender, price);
-
-        req.add("get", _prompt);
+        req.add("get", CreatePrompt(_id, _prompt));
 
         bytes32 request = sendOperatorRequest(req, fee);
 
@@ -54,7 +48,7 @@ contract MarketPlace is ChainlinkClient {
 
     function fulfillPrompt(
         bytes32 requestId,
-        bool _result
+        uint256 _result
     ) public recordChainlinkFulfillment(requestId) {
         emit PromptRequestFulfilled(requestId, _result);
     }

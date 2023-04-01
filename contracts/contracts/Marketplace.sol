@@ -25,12 +25,12 @@ contract MarketPlace is ChainlinkClient {
 
     // Chainlink Events
     event PromptSent(bytes32 indexed requestId);
+    event PromptRequestFulfilled(bytes32 indexed requestId, bool result);
 
     
     constructor(
         address _tokenContract,
-        address _oracleAddress
-        ) {
+        address _oracleAddress) {
 
         oracleAddress = _oracleAddress;
         GenAI = GENAI(_tokenContract);
@@ -54,7 +54,7 @@ contract MarketPlace is ChainlinkClient {
         bytes32 requestId,
         bool _result
     ) public recordChainlinkFulfillment(requestId) {
-        emit RequestResultFulfilled(requestId, _result);
+        emit PromptRequestFulfilled(requestId, _result);
     }
 
 

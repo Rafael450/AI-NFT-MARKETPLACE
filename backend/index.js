@@ -1,4 +1,5 @@
 require('dotenv').config()
+const cloudinary = require('cloudinary').v2;
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -8,6 +9,13 @@ const port = 4000
 
 // basic configs for better running
 const app = express()
+
+cloudinary.config({
+    cloud_name: 'dsebklwp5',
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+
 app.use(cors({
     origin: '*'
 }))
@@ -30,10 +38,7 @@ app.use(function (_, res, next) {
 app.get('/', (_, res) => res.send("Running"))
 
 app.get('/get_images/:stringParam', async (req, res) => {
-    let prompt = req.params.stringParam;
-    id  = parseInt(prompt.split("&")[0]);
-    prompt = prompt.split("&")[1];
-
+    const [id, prompt] = req.params.stringParam.split("&");
     try {
       const response = await axios.post('https://api.openai.com/v1/images/generations', {
         "model": "image-alpha-001",
@@ -47,10 +52,12 @@ app.get('/get_images/:stringParam', async (req, res) => {
         }
       });
       const imageUrl = response.data.data[0].url;
-      res.send(`<img src="${imageUrl}" alt="DALL-E image"/>`);
+      const uploadResult = await cloudinary.uploader.upload(imageUrl, { public_id: id });
+      console.log(uploadResult);
+      res.send(1);
     } catch (error) {
       console.error(error);
-      res.status(500).send('An error occurred');
+      res.send(0);
     }
   });
 

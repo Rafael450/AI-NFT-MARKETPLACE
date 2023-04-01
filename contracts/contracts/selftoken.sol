@@ -3,28 +3,29 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 
-contract SelfToken is IERC20 {
-    string public constant name = "selfToken";
-    string public constant symbol = "SELFT";
+contract GenAI is IERC20 {
+    string public constant name = "GenAI";
+    string public constant symbol = "GENAI";
     uint8 public constant decimals = 18;
-    uint256 private _totalSupply;
+    uint256 private totalSupply;
 
-    mapping(address => uint256) private _balances;
-    mapping(address => mapping(address => uint256)) private _allowances;
+    mapping(address => uint256) private balances;
+    mapping(address => mapping(address => uint256)) private allowances;
 
-    constructor(uint256 initialSupply) {
-        _totalSupply = initialSupply;
-        _balances[msg.sender] = initialSupply;
-        emit Transfer(address(0), msg.sender, initialSupply);
+    constructor(uint256 _initialSupply) {
+        totalSupply = _initialSupply;
+        balances[msg.sender] = _initialSupply;
+        emit Transfer(address(0), msg.sender, _initialSupply);
     }
 
     function totalSupply() external view override returns (uint256) {
-        return _totalSupply;
+        return totalSupply;
     }
 
     function balanceOf(address account) external view override returns (uint256) {
-        return _balances[account];
+        return balances[account];
     }
 
     function transfer(address recipient, uint256 amount) external override returns (bool) {
@@ -38,7 +39,7 @@ contract SelfToken is IERC20 {
     }
 
     function allowance(address owner, address spender) external view override returns (uint256) {
-        return _allowances[owner][spender];
+        return allowances[owner][spender];
     }
 
     function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
@@ -47,13 +48,13 @@ contract SelfToken is IERC20 {
         return true;
     }
 
-    function _transfer(address sender, address recipient, uint256 amount) private {
-        require(sender != address(0), "transfer from the zero address");
-        require(recipient != address(0), "transfer to the zero address");
-        require(_balances[sender] >= amount, "transfer amount exceeds balance");
-        _balances[sender] -= amount;
-        _balances[recipient] += amount;
-        emit Transfer(sender, recipient, amount);
+    function _transfer(address _sender, address _recipient, uint256 _amount) private {
+        require(_sender != address(0), "transfer from the zero address");
+        require(_recipient != address(0), "transfer to the zero address");
+        require(_balances[_sender] >= _amount, "transfer amount exceeds balance");
+        balances[_sender] -= _amount;
+        balances[_recipient] += _amount;
+        emit Transfer(_sender, _recipient, _amount);
     }
 
     function _approve(address owner, address spender, uint256 amount) private {
@@ -62,4 +63,15 @@ contract SelfToken is IERC20 {
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
+
+    function SendPrompt(string memory _prompt) public {
+        Chainlink.Request memory req = buildChainlinkRequest(
+            jobIdMultipleNumbers,
+            address(this),
+            this.fulfillResults.selector
+        );
+
+    }
+
+
 }

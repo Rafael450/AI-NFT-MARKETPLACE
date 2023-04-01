@@ -21,14 +21,9 @@ export default function NftSlider() {
                 style={{
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr 1fr",
-                    marginTop: "50px"
+                    marginTop: "50px",
+                    height: "60%"
                 }}
-                // style={{
-                //     display: "flex",
-                //     flexDirection: "row",
-                //     justifyContent: "space-around",
-                //     marginTop: "50px"
-                // }}
             >
                 {array_imgs.map(i => {
                     return (
@@ -50,21 +45,6 @@ export default function NftSlider() {
                         </Container>
                     )
                 })}
-
-                {/* <AvatarImage
-                    style={{
-                        width: "calc(33.33 % - 10px)",
-                        marginRight: "10px"
-                    }}
-                    size={200}
-                />
-                <AvatarImage
-                    style={{
-                        width: "calc(33.33 % - 10px)",
-                        marginRight: "10px"
-                    }}
-                    size={200}
-                /> */}
             </Container>
 
         </Container>

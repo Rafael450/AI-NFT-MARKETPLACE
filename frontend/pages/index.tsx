@@ -1,12 +1,13 @@
 import Head from "next/head";
-import { Button, TextField } from "@taikai/rocket-kit";
+import { Button, Icon, TextField } from "@taikai/rocket-kit";
 import { useWeb3 } from "../hooks/useWeb3";
 import { Container, Main, NavBar, BrandName, Menu, Footer, Title, SubTitle, Content } from "../styles/home";
 import ConnectModal from "../components/connect-wallet-modal";
-import TextCard from "@/components/text-card";
 import React, { useState } from 'react';
 import ClickableEthAddress from "../components/clickable-eth-address";
-import NftSlider from "@/components/connect-wallet-modal/nft-slider";
+import NftSlider from "@/components/nft-slider";
+import LogoBranca from "../imgs/GenIALogoBranca.png"
+import LogoPreta from "../imgs/GenIALogoPreta.png"
 
 export default function Home() {
 
@@ -73,11 +74,70 @@ export default function Home() {
       </NavBar>
       {isConnectModal && <ConnectModal onClose={() => setConnectModal(false)} />}
       <Main>
-        <Content
+        <Container
           style={{
-            height: "43%",
+            display: "flex",
+            alignItems: "flex-start",
+            height: "100px"
+          }}
+        >
+          <img src={LogoBranca.src} alt="logo" style={{height: "100px"}}/>
+        </Container>
+      {!connected && <Container
+          style={{
+            textAlign: "center",
+            height: "55%",
+            width: "80%",
+            margin: "0 auto"
+          }}
+        >
+          <Title style={{ fontWeight: "500", fontSize: "3rem", marginBottom: "50px" }}>
+            Mint your own NFT using AI to fuel your imagination.<br></br>
+            You can purchase our tokens tax-free and earn more by selling your art.
+          </Title>
+          <Title style={{ fontWeight: "500", fontSize: "3rem" }}>
+            Each GenIA token can generate up to 4 images, which can be minted as
+            NFTs and sold at our Marketplace. Let your imagination run wild!
+          </Title>
+          <Container
+            style={{
+              height: "100%",
+              justifyContent: "space-between",
+              display: "flex",
+              flexDirection: "row",
+              marginTop: "70px",
+              alignItems: "center"
+            }}
+          >
+            <Button
+              ariaLabel="Connect"
+              className="button"
+              color="white"
+              rounded
+              txtColor="black"
+              value="Try GenIA"
+              variant="solid"
+              action={() => setConnectModal(true)}
+              style={{
+                margin: "2px",
+                height: "80px",
+                width: "160px",
+                fontSize: "10rem"
+              }}
+            />
+            <Container style={{display: "flex", flexDirection: "row", fontSize: "70px", height: "70px", alignItems: "center", lineHeight: "70px"}}>
+              Follow us
+              <Icon style={{height: "50px", marginLeft: "20px"}} icon="instagram-n" fill="#fff"/>
+              <Icon style={{height: "50px"}} icon="discord-n" fill="#fff"/>
+              <Icon style={{height: "50px"}} icon="twitter-n" fill="#fff"/>
+            </Container>
+          </Container>
+        </Container>}
+        {connected && <Content
+          style={{
+            height: "55%",
             justifyContent: "flex-start",
-            padding: "200px"
+            paddingTop: "100px"
           }}
         >
           <Title
@@ -117,9 +177,8 @@ export default function Home() {
               fontWeight: "bold"
             }}
           />
-        </Content>
+        </Content>}
         <NftSlider />
-        <TextCard/>
       </Main>
     </Container>
   );

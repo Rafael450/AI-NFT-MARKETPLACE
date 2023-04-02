@@ -43,9 +43,22 @@ This is how the application works.
 
 ## Getting Started
 ## Requirements
-### Front-end (Piá)
-### Back-end (Ursão)
+### Front-end 
+1. `cd frontend`
+2. `npm install`
+3. Set the envoriment variables `NEXT_PUBLIC_CHAIN_ID`, `WEB3_HOST_PROVIDER`
+4. npm run dev
+### Back-end 
+1. `cd backend`
+2. `npm install`
+3. Set the envoriment variables that connect to the cloudinary database.
+4. `node index`
 ### Contracts
+1. `cd contracts`
+2. `npm install`
+3. Set your the DEPLOY_INFURA_KEY and PRIVATE_KEY variables
+4. `npx hardhat run --network aurora ./scripts/deployAurora.ts`
+5. `npx hardhat run --network mumbai ./scripts/deployMumbai.ts`
 
 ## Requirements
 

@@ -33,7 +33,8 @@ This is our GenIA token:
 To make the mint to really work, we use a bridge connection to Polygon so we can use Chainlink protocol to make some API calls to our back-end. This allows us to make on-chain API calls directly to our back-end, which will send another call to the OpenAI API for the image generation with DALL-E2 AI. After that, the image is stored into Cloudinary with a previously settled URL, so we can make it easy to show up the NFTs in our front-end application (in My Collections and in NFT Marketplace spaces).
 
 Take a look on this Flowchart representation:
-![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229328038-050d15f0-f459-4485-a837-75768f57d716.jpg)
+![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229328062-6161c5db-967d-4f83-903e-12862d29114c.jpg)
+
 
 ##Getting Started
 ###Front-end (Piá)

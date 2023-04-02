@@ -46,6 +46,8 @@ This is how the application works.
 ### Back-end (Ursão)
 ### Contracts
 
+## Requirements
+
 ## Usage
 ### User Interface
 1. When you load the page you will see a brief about how to use GenIA. On the same page, you will see the Try GenIA button. After clicking on it, you will be asked to connect your MetaMask to the site.

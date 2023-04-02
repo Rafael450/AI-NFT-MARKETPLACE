@@ -77,7 +77,6 @@ This is how the application works.
 
 Twitter: https://twitter.com/GenIANFTMarket
 Instagram: https://www.instagram.com/genianft/
-Site:
 
 
 ## Team:

@@ -72,10 +72,6 @@ This is how the application works.
 
 4. If you have your wallet connected, you will also be able to click on My Collection to see your own AI generated NFT collection! There, you also will be able to SELL your NFT in the webpage marketplace, choosing the price in GenIA Token.
 
-### Screen Prints
-
-
-
 
 ## Redes sociais
 

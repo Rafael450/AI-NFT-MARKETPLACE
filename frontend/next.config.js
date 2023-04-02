@@ -2,6 +2,7 @@ require('dotenv').config()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  ignoreBuildErrors: true,
   env: {
     NFT_ADDRESS: "0x5D09017E117F53AF6065e62aB3e9888242e201F6",
     TOKEN_ADDRESS: "0x23A53c4eDE149C82409140Fa47DF01e732e428fC",

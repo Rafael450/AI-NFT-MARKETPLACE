@@ -26,15 +26,18 @@ GenIA is a platform that allows users to enter a command prompt to generate an i
 
 ## Flowchart
 This is how the application works.
-Our front-end uses LayerX to connect to the Aurora blockchain to make requests. At the same time, it is possible to use your MetaMask to buy our ERC20 token (GenIA), which will be used to mint a ERC721 NFT. 
+1.1 Our front-end uses LayerX to connect to the Aurora blockchain to make requests. 
+1.2 At the same time, it is possible to use your MetaMask to buy our ERC20 token (GenIA), which will be used to mint a ERC721 NFT. 
 
-This is our GenIA token:
+2. This is our GenIA token:
 
 <img width="100" alt="Design Token GenIA" src="https://user-images.githubusercontent.com/101767386/229328402-b598e662-b6e7-41c3-956e-5f516c8dbda4.png">
 
-To make the mint to really work, we use a bridge connection to Polygon so we can use Chainlink protocol to make some API calls to our back-end. This allows us to make on-chain API calls directly to our back-end, which will send another call to the OpenAI API for the image generation with DALL-E2 AI. After that, the image is stored into Cloudinary with a previously settled URL, so we can make it easy to show up the NFTs in our front-end application (in My Collections and in NFT Marketplace spaces).
+3. To make the mint to really work, we use a bridge connection to Polygon so we can use Chainlink protocol to make some API calls to our back-end. This allows us to make on-chain API calls directly to our back-end, which will send another call to the OpenAI API for the image generation with DALL-E2 AI.
 
-Take a look on this Flowchart representation:
+4. After that, the image is stored into Cloudinary with a previously settled URL, so we can make it easy to show up the NFTs in our front-end application (in My Collections and in NFT Marketplace spaces).
+
+5. Take a look on this Flowchart representation:
 
 ![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229328431-8b60e3cb-7de3-40e6-b69b-d7f9d3d7c4f6.jpg)
 
@@ -46,9 +49,13 @@ Take a look on this Flowchart representation:
 
 ## Usage
 ### User Interface
-When you load the page you will see a brief about how to use GenIA. On the same page, you will see the Try GenIA button. After clicking on it, you will be asked to connect your MetaMask to the site. After you successfully connect your MetaMask, you will be able to see a text box to input your own PROMPT - which will be used to generate an AI image from DALL-E2 API -, you will be able to mint a NFT on Aurora blockchain by clicking on Generate.
-Also, you always are able to scroll down the main page to see the AI generated NFT Marketplace that is in there from other users selling their own NFTs. There, if you have a connection with MetaMask on the site, you will be able to buy other people's NFTs.
-If you have your wallet connected, you will also be able to click on My Collection to see your own AI generated NFT collection! There, you also will be able to SELL your NFT in the webpage marketplace, choosing the price in GenIA Token.
+1. When you load the page you will see a brief about how to use GenIA. On the same page, you will see the Try GenIA button. After clicking on it, you will be asked to connect your MetaMask to the site.
+
+2.1 After you successfully connect your MetaMask, you will be able to see a text box to input your own PROMPT - which will be used to generate an AI image from DALL-E2 API -, you will be able to mint a NFT on Aurora blockchain by clicking on Generate.
+
+2.2 Also, you always are able to scroll down the main page to see the AI generated NFT Marketplace that is in there from other users selling their own NFTs. There, if you have a connection with MetaMask on the site, you will be able to buy other people's NFTs.
+
+3. If you have your wallet connected, you will also be able to click on My Collection to see your own AI generated NFT collection! There, you also will be able to SELL your NFT in the webpage marketplace, choosing the price in GenIA Token.
 
 ### Screen Prints
 

@@ -11,20 +11,20 @@ async function main() {
   const genft = await GENFT.deploy();
   
   await genft.deployed();
-  console.log("Contract address:", genft.address);
+  console.log("NFT address:", genft.address);
 
   const Token = await ethers.getContractFactory("GenIA_Token");
   const token = await Token.deploy(ethers.utils.parseEther("1"));
 
   await token.deployed();
-  console.log("Contract address:", token.address);
+  console.log("TOKEN address:", token.address);
 
   
   const Market = await ethers.getContractFactory("MarketPlace");
   const market = await Market.deploy(token.address, genft.address, ethers.utils.parseEther("0.00001"));
 
   await market.deployed();
-  console.log("Contract address:", market.address);
+  console.log("MARKET address:", market.address);
 
 
 

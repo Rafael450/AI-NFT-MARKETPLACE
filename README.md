@@ -3,12 +3,11 @@
 
 ## Overview
 
-GenIA is a platform that allows users to enter a command prompt to generate an image and simultaneously mint it as an NFT on the Aurora Blockchain. These NFTs can then be instantly sold on our platform for GenIA tokens, which can be used to pay for the generation of new images using AI prompts. Our tokens can be easily purchased using QR Code payments through PIX, the brazilian way of sending money fast and tax-free.
+GenIA is a platform that allows users to enter a command prompt to generate an image and simultaneously mint it as an NFT on the Aurora Blockchain. These NFTs can then be instantly sold on our platform for GenIA tokens, which can be used to pay for the generation of new images using AI prompts. Our tokens can be easily purchased using QR Code payments through PIX, the brazilian way of sending money fast and tax-free. [Click here to see our demo](https://master--ornate-alpaca-83f547.netlify.app/)
 
 ## Technologies Used
 * Typescript and Next.js for the front-end
 * MetaMask to connect the user with the front-end
-* MetaMask Flask (snaps?)
 * LayerX for connect the front-end functionalities to the contracts
 * Aurora blockchain for minting NFTs
 * ERC20 and ERC721 protocols for the GenIA token and NFTs

@@ -26,8 +26,7 @@ GenIA is a platform that allows users to enter a command prompt to generate an i
 
 ## Flowchart
 This is how the application works.
-1.1 Our front-end uses LayerX to connect to the Aurora blockchain to make requests. 
-1.2 At the same time, it is possible to use your MetaMask to buy our ERC20 token (GenIA), which will be used to mint a ERC721 NFT. 
+1. Our front-end uses LayerX to connect to the Aurora blockchain to make requests. At the same time, it is possible to use your MetaMask to buy our ERC20 token (GenIA), which will be used to mint a ERC721 NFT. 
 
 2. This is our GenIA token:
 

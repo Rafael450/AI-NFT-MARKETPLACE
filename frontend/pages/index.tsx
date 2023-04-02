@@ -58,7 +58,7 @@ export default function Home() {
       return uri
     }))
 
-    setCollection(img_array)
+    setCollection(img_array!)
   }
 
   useEffect(() =>{ 

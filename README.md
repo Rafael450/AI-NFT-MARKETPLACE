@@ -27,15 +27,13 @@ GenIA is a platform that allows users to enter a command prompt to generate an i
 ##Flowchart
 This is how the application works.
 Our front-end uses LayerX to connect to the Aurora blockchain to make requests. At the same time, it is possible to use your MetaMask to buy our ERC20 token (GenIA), which will be used to mint a ERC721 NFT. 
-
 This is our GenIA token:
 ![Design Token GenIA](https://user-images.githubusercontent.com/101767386/229327957-ea444163-4399-4cf1-899c-d39c3b03eda8.png)
 
 To make the mint to really work, we use a bridge connection to Polygon so we can use Chainlink protocol to make some API calls to our back-end. This allows us to make on-chain API calls directly to our back-end, which will send another call to the OpenAI API for the image generation with DALL-E2 AI. After that, the image is stored into Cloudinary with a previously settled URL, so we can make it easy to show up the NFTs in our front-end application (in My Collections and in NFT Marketplace spaces).
 
 Take a look on this Flowchart representation:
-[GenIA Flowchart.pdf](https://github.com/Rafael450/GenIA/files/11131040/GenIA.Flowchart.pdf)
-
+![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229328038-050d15f0-f459-4485-a837-75768f57d716.jpg)
 
 ##Getting Started
 ###Front-end (Piá)

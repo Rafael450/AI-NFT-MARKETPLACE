@@ -53,12 +53,12 @@ export default function Home() {
       allTokens.push(i)
     }
 
-    let img_array = await Promise.all(allTokens.map(async t => {
+    let img_array : string[] = await Promise.all(allTokens.map(async t => {
       let uri = await GeNFT.methods.tokenURI(t).call()
       return uri
     }))
 
-    setCollection(img_array!)
+    setCollection(img_array)
   }
 
   useEffect(() =>{ 

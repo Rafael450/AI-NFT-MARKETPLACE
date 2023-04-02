@@ -25,8 +25,9 @@ export default function Home() {
   const [collection, setCollection] = useState([])
   const [prompt, setPrompt] = useState("")
 
-  const GeNFTAdress = "0x96e662894f471289747A0B15EcD75133d94DA916"
-  const GeTokenAddress = ""
+  const GeNFTAdress = "0x5D09017E117F53AF6065e62aB3e9888242e201F6"
+  const GeTokenAddress = "0x23A53c4eDE149C82409140Fa47DF01e732e428fC"
+  const MarketplaceAddress = "0x54d9e4557014D03a5Ba7c1d14F1EEBE97e3D558c"
 
   async function handleSendPrompt(): Promise<void> {
 
@@ -46,29 +47,22 @@ export default function Home() {
       GeTokenAddress
     )
 
-    const qtyTokens = await GeNFT.methods.getTotalTokens().call()
+    const Marketplace = new connection.Web3.eth.Contract(
+      marketplaceconfig as AbiItem[],
+      MarketplaceAddress
+    )
 
-    console.log(qtyTokens)
+    await Marketplace.methods.SendPrompt(prompt).send({from: myAccount})
+    let lastToken = await GeNFT.methods.getTotalTokens().call()
+    let lastTokenURI = await GeNFT.methods.tokenURI(lastToken).call()
+    console.log(lastTokenURI)
 
-    let allTokens: { [key: number]: string }[] = []
-    for (let i = 1; i <= qtyTokens; i++) {
-      let obj: { [key: number]: string } = {}
-      let owner = await GeNFT.methods.ownerOf(i).call()
-      obj[i] = owner
-      allTokens.push(obj)
-    }
-    console.log(allTokens)
+    const min = 1000000;
+    const max = 9999999;
+    lastTokenURI = lastTokenURI.replace(/(v)\d+(?=\/3)/, `${Math.floor(Math.random() * (max - min + 1))}`);
+    console.log(lastTokenURI);
 
-    let myTokens = allTokens.filter(t => Object.values(t).includes(myAccount)).map(t => parseInt(Object.keys(t)[0]))
-    console.log(myTokens)
-
-    let img_array = await Promise.all(myTokens.map(async t => {
-      let uri = await GeNFT.methods.tokenURI(t).call()
-      return uri
-    }))
-
-    console.log(img_array);
-
+    
     setPrompt("")
     return
   }
@@ -121,7 +115,6 @@ export default function Home() {
     setMyCollection(!isMyCollection)
     setCollection(img_array)
 
-    setPrompt("")
     return
   }
 

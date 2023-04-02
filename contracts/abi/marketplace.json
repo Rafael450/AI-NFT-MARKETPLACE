@@ -1,12 +1,65 @@
 [
 	{
-		"inputs": [],
-		"name": "getTotalTokens",
-		"outputs": [
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_tokenContract",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_NFTContract",
+				"type": "address"
+			},
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "_promptPrice",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "sent",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "prompt",
+				"type": "string"
+			}
+		],
+		"name": "activateBridgeToPolygon",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "GeNFT",
+		"outputs": [
+			{
+				"internalType": "contract GENFT",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "GenIA",
+		"outputs": [
+			{
+				"internalType": "contract GENIA",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -15,49 +68,27 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
 				"internalType": "string",
-				"name": "tokenURI_",
+				"name": "_prompt",
 				"type": "string"
 			}
 		],
-		"name": "mint",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"name": "SendPrompt",
+		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
+		"inputs": [],
+		"name": "promptPrice",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "_tokenId",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "transfer",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

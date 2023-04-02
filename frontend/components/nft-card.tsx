@@ -11,13 +11,6 @@ export default function NftCard(props: any) {
                 alignItems: "center",
             }}
         >
-            {/* <AvatarImage
-                style={{
-                    width: "calc(33.33 % - 10px)",
-                    marginRight: "10px"
-                }}
-                size={200}
-            /> */}
             <img
                 style={{
                     width: "calc(33.33 % - 10px)",

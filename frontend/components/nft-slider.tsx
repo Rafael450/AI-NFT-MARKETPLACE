@@ -1,22 +1,37 @@
 import { AvatarImage } from "@taikai/rocket-kit"
 import { Container, Title } from "@/styles/home"
+import NftCard from "./nft-card"
 
 let array_imgs: { [key: string]: string }[] = [
     { "url": "a" }, { "url": "b" }, { "url": "c" },
-    { "url": "d" }, { "url": "e" }, { "url": "f" }, 
+    { "url": "d" }, { "url": "e" }, { "url": "f" },
 ]
 
-export default function NftSlider() {
+export default function NftSlider(props: any) {
+
+    let mode = props.title == "My Collection" ? 1 : 2
+    
+    let array_imgs = props.collection
+
     return (
         <Container
-            style={{
-                background: "white",
-                color: "#41424c",
-                textAlign: "center",
-                height: "70%"
-            }}
+            style={mode == 1 ?
+                {
+                    background: "black",
+                    color: "#41424c",
+                    textAlign: "center",
+                    height: "70%"
+                }
+                : {
+                    background: "white",
+                    color: "#41424c",
+                    textAlign: "center",
+                    height: "70%"
+                }}
         >
-            <Title style={{ marginTop: "50px", fontSize: "40px" }}>NFT Marketplace</Title>
+            <Title style={mode == 1 ?
+                { marginTop: "50px", fontSize: "40px", color: "white" } : { marginTop: "50px", fontSize: "40px" }}
+            >{props.title}</Title>
             <Container
                 style={{
                     display: "grid",
@@ -25,26 +40,11 @@ export default function NftSlider() {
                     height: "60%"
                 }}
             >
-                {array_imgs.map(i => {
+                {array_imgs ? array_imgs.map((i: string) => {
                     return (
-                        <Container
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                            }}
-                        >
-                            <AvatarImage
-                                style={{
-                                    width: "calc(33.33 % - 10px)",
-                                    marginRight: "10px"
-                                }}
-                                size={200}
-                            />
-                            <p style={{fontWeight: "500", fontSize: "40px"}}>{`NFT ${i["url"]}`}</p>
-                        </Container>
+                        <NftCard mode={mode} nft={i} />
                     )
-                })}
+                }) : ""}
             </Container>
 
         </Container>

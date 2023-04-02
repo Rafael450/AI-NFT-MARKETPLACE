@@ -3,7 +3,8 @@ require('dotenv').config()
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_CHAIN_ID: 1313161555
+    NEXT_PUBLIC_CHAIN_ID: 1313161555,
+    WEB3_HOST_PROVIDER: "https://testnet.aurora.dev"
   }
 }
 

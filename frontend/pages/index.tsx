@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Button, Icon, TextField } from "@taikai/rocket-kit";
+import { Web3Connection, Web3Contract } from "@taikai/dappkit";
 import { useWeb3 } from "../hooks/useWeb3";
 import { Container, Main, NavBar, BrandName, Menu, Footer, Title, SubTitle, Content } from "../styles/home";
 import ConnectModal from "../components/connect-wallet-modal";
@@ -8,11 +9,116 @@ import ClickableEthAddress from "../components/clickable-eth-address";
 import NftSlider from "@/components/nft-slider";
 import LogoBranca from "../imgs/GenIALogoBranca.png"
 import LogoPreta from "../imgs/GenIALogoPreta.png"
+import genia1 from "../imgs/genIA1.webp"
+import genia2 from "../imgs/genIA2.webp"
+import genia3 from "../imgs/genIA3.png"
+
+import nftconfig from "../../contracts/abi/nft.json"
+import tokenconfig from "../../contracts/abi/token.json"
+import marketplaceconfig from "../../contracts/abi/marketplace.json"
 
 export default function Home() {
 
-  const { connected } = useWeb3();
+  const { connected, connect, disconnect, error, chainId, address } = useWeb3();
   const [isConnectModal, setConnectModal] = useState(false);
+  const [isMyCollection, setMyCollection] = useState(false)
+  const [collection, setCollection] = useState([])
+  const [prompt, setPrompt] = useState("")
+
+  const GeNFTAdress = "0x5D09017E117F53AF6065e62aB3e9888242e201F6"
+  const GeTokenAddress = "0x23A53c4eDE149C82409140Fa47DF01e732e428fC"
+  const MarketplaceAddress = "0x54d9e4557014D03a5Ba7c1d14F1EEBE97e3D558c"
+
+  async function handleSendPrompt(): Promise<void> {
+
+    const connection = new Web3Connection({ web3Host: process.env.WEB3_HOST_PROVIDER })
+    await connection.start()
+    await connection.connect()
+
+    const myAccount = await connection.getAddress()
+
+    const GeNFT = new connection.Web3.eth.Contract(
+      nftconfig as AbiItem[],
+      GeNFTAdress
+    )
+
+    const GeToken = new connection.Web3.eth.Contract(
+      tokenconfig as AbiItem[],
+      GeTokenAddress
+    )
+
+    const Marketplace = new connection.Web3.eth.Contract(
+      marketplaceconfig as AbiItem[],
+      MarketplaceAddress
+    )
+
+    await Marketplace.methods.SendPrompt(prompt).send({from: myAccount})
+    let lastToken = await GeNFT.methods.getTotalTokens().call()
+    let lastTokenURI = await GeNFT.methods.tokenURI(lastToken).call()
+    console.log(lastTokenURI)
+
+    const min = 1000000;
+    const max = 9999999;
+    lastTokenURI = lastTokenURI.replace(/(v)\d+(?=\/3)/, `${Math.floor(Math.random() * (max - min + 1))}`);
+    console.log(lastTokenURI);
+
+    
+    setPrompt("")
+    return
+  }
+  
+  async function handleMyCollection(): Promise<void> {
+
+    if(isMyCollection) {
+      setMyCollection(!isMyCollection)
+      return
+    }
+
+    const connection = new Web3Connection({ web3Host: process.env.WEB3_HOST_PROVIDER })
+    await connection.start()
+    await connection.connect()
+
+    const myAccount = await connection.getAddress()
+
+    const GeNFT = new connection.Web3.eth.Contract(
+      nftconfig as AbiItem[],
+      GeNFTAdress
+    )
+
+    const GeToken = new connection.Web3.eth.Contract(
+      tokenconfig as AbiItem[],
+      GeTokenAddress
+    )
+
+    const qtyTokens = await GeNFT.methods.getTotalTokens().call()
+
+    console.log(qtyTokens)
+
+    let allTokens: { [key: number]: string }[] = []
+    for (let i = 1; i <= qtyTokens; i++) {
+      let obj: { [key: number]: string } = {}
+      let owner = await GeNFT.methods.ownerOf(i).call()
+      obj[i] = owner
+      allTokens.push(obj)
+    }
+    console.log(allTokens)
+
+    let myTokens = allTokens.filter(t => Object.values(t).includes(myAccount)).map(t => parseInt(Object.keys(t)[0]))
+    console.log(myTokens)
+
+    let img_array = await Promise.all(myTokens.map(async t => {
+      let uri = await GeNFT.methods.tokenURI(t).call()
+      return uri
+    }))
+
+    console.log(img_array)
+    setMyCollection(!isMyCollection)
+    setCollection(img_array)
+
+    return
+  }
+
+
   return (
     <Container>
       <Head>
@@ -30,19 +136,19 @@ export default function Home() {
         {/* <BrandName>AI NFT Marketplace</BrandName> */}
         {connected &&
           <Button
-            ariaLabel="Connect"
+            ariaLabel="mycollection"
             className="button"
-            color="white"
+            color={isMyCollection ? "grey150" : "white"}
             txtColor="black"
             value="My Collection"
             variant="solid"
-            action={() => setConnectModal(true)}
+            action={handleMyCollection}
             style={{
               margin: "2px"
             }}
           />
         }
-        <Button
+        {connected && <Button
           ariaLabel="BuyTokens"
           className="button"
           value="Buy GenIA"
@@ -53,7 +159,7 @@ export default function Home() {
           style={{
             margin: "2px"
           }}
-        />
+        />}
         <Menu>
           {!connected && (
             <Button
@@ -74,68 +180,113 @@ export default function Home() {
       </NavBar>
       {isConnectModal && <ConnectModal onClose={() => setConnectModal(false)} />}
       <Main>
-        <Container
+        {!isMyCollection && <Container
           style={{
             display: "flex",
             alignItems: "flex-start",
-            height: "100px"
+            height: "100px",
+            marginBottom: "40px"
           }}
         >
-          <img src={LogoBranca.src} alt="logo" style={{height: "100px"}}/>
-        </Container>
-      {!connected && <Container
+          <img src={LogoBranca.src} alt="logo" style={{ height: "100px" }} />
+        </Container>}
+        {!connected && <Container
           style={{
-            textAlign: "center",
-            height: "55%",
-            width: "80%",
-            margin: "0 auto"
+            height: "800px",
+            width: "95%",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "row"
           }}
         >
-          <Title style={{ fontWeight: "500", fontSize: "3rem", marginBottom: "50px" }}>
-            Mint your own NFT using AI to fuel your imagination.<br></br>
-            You can purchase our tokens tax-free and earn more by selling your art.
-          </Title>
-          <Title style={{ fontWeight: "500", fontSize: "3rem" }}>
-            Each GenIA token can generate up to 4 images, which can be minted as
-            NFTs and sold at our Marketplace. Let your imagination run wild!
-          </Title>
+          <Container
+            style={{ width: "40%", textAlign: "left" }}
+          >
+            <Title style={{ fontWeight: "500", fontSize: "2.5rem", marginBottom: "50px" }}>
+              Mint your own NFT using AI to fuel your imagination.
+              You can purchase our tokens tax-free and earn more by selling your art.
+            </Title>
+            <Title style={{ fontWeight: "500", fontSize: "2.5rem" }}>
+              Each GenIA token can generate up to 4 images, which can be minted as
+              NFTs and sold at our Marketplace. Let your imagination run wild!
+            </Title>
+            <Container
+              style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Button
+                ariaLabel="Connect"
+                className="button"
+                color="red400"
+                rounded
+                txtColor="oracle100"
+                value="Try GenIA"
+                variant="solid"
+                action={() => setConnectModal(true)}
+                style={{
+                  marginTop: "20px",
+                  height: "70px",
+                  width: "140px",
+                  fontSize: "10rem"
+                }}
+              />
+              <Container style={{
+                marginTop: "20px",
+                display: "flex",
+                flexDirection: "row",
+                fontSize: "2.5rem",
+                height: "70px",
+                alignItems: "center",
+                lineHeight: "70px"
+              }}>
+                Follow us
+                <Icon style={{ height: "50px", marginLeft: "20px" }} icon="instagram-n" fill="#fff" />
+                <Icon style={{ height: "50px" }} icon="twitter-n" fill="#fff" />
+              </Container>
+            </Container>
+          </Container>
           <Container
             style={{
-              height: "100%",
+              width: "50%",
+              marginLeft: "10%",
+              height: "600px",
               justifyContent: "space-between",
               display: "flex",
-              flexDirection: "row",
-              marginTop: "70px",
+              flexDirection: "column",
               alignItems: "center"
             }}
           >
-            <Button
-              ariaLabel="Connect"
-              className="button"
-              color="white"
-              rounded
-              txtColor="black"
-              value="Try GenIA"
-              variant="solid"
-              action={() => setConnectModal(true)}
+            <Container
               style={{
-                margin: "2px",
-                height: "80px",
-                width: "160px",
-                fontSize: "10rem"
+                height: "33%",
+                width: "50%",
+                position: "relative"
               }}
-            />
-            <Container style={{display: "flex", flexDirection: "row", fontSize: "70px", height: "70px", alignItems: "center", lineHeight: "70px"}}>
-              Follow us
-              <Icon style={{height: "50px", marginLeft: "20px"}} icon="instagram-n" fill="#fff"/>
-              <Icon style={{height: "50px"}} icon="discord-n" fill="#fff"/>
-              <Icon style={{height: "50px"}} icon="twitter-n" fill="#fff"/>
+            >
+              <img src={genia1.src} alt="genia1" style={{ height: "400px", width: "400px", position: "absolute", bottom: "-130px" }}></img>
+            </Container>
+            <Container
+              style={{
+                height: "33%",
+                width: "100%",
+                alignItems: "flex-end"
+              }}
+            >
+              <img src={genia2.src} alt="genia2" style={{ height: "350px", width: "350px" }}></img>
+            </Container>
+            <Container
+              style={{
+                height: "33%",
+                width: "100%",
+                position: "relative"
+              }}
+            >
+              <img src={genia3.src} alt="genia3" style={{ height: "350px", width: "350px", position: "absolute", bottom: "0" }}></img>
             </Container>
           </Container>
         </Container>}
-        {connected && <Content
+        {connected && !isMyCollection && <Content
           style={{
-            height: "55%",
+            height: "800px",
             justifyContent: "flex-start",
             paddingTop: "100px"
           }}
@@ -148,7 +299,8 @@ export default function Home() {
           >Be bold. Be wild. Be GenIA.</Title>
           <TextField
             name="generate-prompt"
-            onChange={function noRefCheck() { }}
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
             placeholder="Generate Image w/ Prompt"
             type="text"
             style={{
@@ -168,17 +320,21 @@ export default function Home() {
             ariaLabel="generate"
             className="button"
             value="Generate"
-            color="black"
-            txtColor="white"
+            color="red400"
+            txtColor="oracle100"
+            rounded
             variant="solid"
-            action={() => setConnectModal(true)}
+            action={handleSendPrompt}
             style={{
-              margin: "2px",
-              fontWeight: "bold"
+              marginTop: "20px",
+              height: "70px",
+              width: "140px",
+              fontSize: "10rem"
             }}
           />
         </Content>}
-        <NftSlider />
+        {!isMyCollection && <NftSlider title="NFT Marketplace"/>}
+        {isMyCollection && <NftSlider title="My Collection" collection={collection}/>}
       </Main>
     </Container>
   );

@@ -52,7 +52,7 @@ This is how the application works.
 ### Back-end 
 1. `cd backend`
 2. `npm install`
-3. Set the envoriment variables that connect to the cloudinary database.
+3. Set the envoriment variables that connect to the cloudinary database and openAi API, `OPENAI_API_KEY`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 4. `node index`
 ### Contracts
 1. `cd contracts`

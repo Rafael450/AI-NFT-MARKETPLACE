@@ -13,6 +13,7 @@ import LogoPreta from "../imgs/GenIALogoPreta.png"
 import genia1 from "../imgs/genIA1.webp"
 import genia2 from "../imgs/genIA2.webp"
 import genia3 from "../imgs/genIA3.png"
+import { AbiItem } from "web3-utils";
 
 import nftconfig from "../../contracts/abi/nft.json"
 import tokenconfig from "../../contracts/abi/token.json"
@@ -378,7 +379,7 @@ export default function Home() {
             }}
           />
         </Content>}
-        {showPopup && <Popup imageUrl={newImage}/>}
+        {showPopup && <Popup />}
         {!isMyCollection && <NftSlider title="NFT Marketplace" collection={collection}/>}
         {isMyCollection && <NftSlider title="My Collection" collection={collection}/>}
       </Main>

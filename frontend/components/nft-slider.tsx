@@ -40,9 +40,9 @@ export default function NftSlider(props: any) {
                     height: "60%"
                 }}
             >
-                {array_imgs ? array_imgs.map((i: string) => {
+                {array_imgs ? array_imgs.map((i: string, index: number) => {
                     return (
-                        <NftCard mode={mode} nft={i} />
+                        <NftCard mode={mode} nft={i} key={index}/>
                     )
                 }) : ""}
             </Container>

@@ -39,7 +39,7 @@ This is how the application works.
 
 5. Take a look on this Flowchart representation:
 
-![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229345806-5b9c6b90-e3dd-48c9-a92c-23a4cb4fabc0.jpg)
+![GenIA Flowchart](https://user-images.githubusercontent.com/101767386/229346058-c37ae9bf-2101-4d91-82aa-63e21ffa77e7.jpg)
 
 
 ## Getting Started

@@ -10,8 +10,10 @@ contract GenIA_NFT is ERC721, Ownable {
 
     mapping (uint256 => string) private _tokenURIs;
 
+
     string private _baseURIextended;
     uint256 public _tokenIds = 0 ;
+
 
     constructor()
         ERC721("GenIANFT", "GENFT")
@@ -20,7 +22,7 @@ contract GenIA_NFT is ERC721, Ownable {
     function setBaseURI(string memory baseURI_) external onlyOwner() {
         _baseURIextended = baseURI_;
     }
-    
+
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual {
         require(_exists(tokenId), "This token does not exists");
         _tokenURIs[tokenId] = _tokenURI;

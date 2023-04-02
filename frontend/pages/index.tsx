@@ -24,7 +24,7 @@ export default function Home() {
   const { connected, connect, disconnect, error, chainId, address } = useWeb3();
   const [isConnectModal, setConnectModal] = useState(false);
   const [isMyCollection, setMyCollection] = useState(false)
-  const [collection, setCollection] = useState([])
+  const [collection, setCollection] = useState<string[]>([])
   const [newImage, setNewImage] = useState("")
   const [prompt, setPrompt] = useState("")
   const [showPopup, setShowPopup] = useState(false)
@@ -53,7 +53,7 @@ export default function Home() {
       allTokens.push(i)
     }
 
-    let img_array : string[] = await Promise.all(allTokens.map(async t => {
+    let img_array = await Promise.all(allTokens.map(async t => {
       let uri = await GeNFT.methods.tokenURI(t).call()
       return uri
     }))

@@ -52,7 +52,7 @@ app.get('/get_images/:stringParam', async (req, res) => {
         }
       });
       const imageUrl = response.data.data[0].url;
-      const uploadResult = await cloudinary.uploader.upload(imageUrl, { public_id: id });
+      const uploadResult = await cloudinary.uploader.upload(imageUrl, { public_id: id, version: 'v1' });
       console.log(uploadResult);
       res.send(1);
     } catch (error) {

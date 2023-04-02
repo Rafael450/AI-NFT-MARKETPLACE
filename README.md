@@ -1,5 +1,5 @@
 Contributors:
 [DannxC](https://github.com/DannxC)
-[name](url)
+[GabrielMaiaBR]([url](https://github.com/GabrielMaiaBR)
 [Rafael450](https://github.com/Rafael450)
-[name](url)
+[Rafa658)]([url](https://github.com/Rafa658))

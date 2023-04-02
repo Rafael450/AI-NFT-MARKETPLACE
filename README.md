@@ -42,6 +42,7 @@ This is how the application works.
 
 
 ## Getting Started
+## Requirements
 ### Front-end (Piá)
 ### Back-end (Ursão)
 ### Contracts

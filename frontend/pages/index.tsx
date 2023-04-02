@@ -4,9 +4,10 @@ import { Web3Connection, Web3Contract } from "@taikai/dappkit";
 import { useWeb3 } from "../hooks/useWeb3";
 import { Container, Main, NavBar, BrandName, Menu, Footer, Title, SubTitle, Content } from "../styles/home";
 import ConnectModal from "../components/connect-wallet-modal";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClickableEthAddress from "../components/clickable-eth-address";
 import NftSlider from "@/components/nft-slider";
+import Popup from "@/components/popup";
 import LogoBranca from "../imgs/GenIALogoBranca.png"
 import LogoPreta from "../imgs/GenIALogoPreta.png"
 import genia1 from "../imgs/genIA1.webp"
@@ -23,11 +24,45 @@ export default function Home() {
   const [isConnectModal, setConnectModal] = useState(false);
   const [isMyCollection, setMyCollection] = useState(false)
   const [collection, setCollection] = useState([])
+  const [newImage, setNewImage] = useState("")
   const [prompt, setPrompt] = useState("")
+  const [showPopup, setShowPopup] = useState(false)
 
-  const GeNFTAdress = "0x5D09017E117F53AF6065e62aB3e9888242e201F6"
-  const GeTokenAddress = "0x23A53c4eDE149C82409140Fa47DF01e732e428fC"
-  const MarketplaceAddress = "0x54d9e4557014D03a5Ba7c1d14F1EEBE97e3D558c"
+  const GeNFTAdress = process.env.NFT_ADDRESS
+  const GeTokenAddress = process.env.TOKEN_ADDRESS
+  const MarketplaceAddress = process.env.MARKETPLACE_ADDRESS
+
+  async function handleMarketPlace():Promise<void> {
+    const connection = new Web3Connection({ web3Host: process.env.WEB3_HOST_PROVIDER })
+    await connection.start()
+    await connection.connect()
+
+    let myAccount = await connection.getAddress()
+    myAccount = myAccount.toUpperCase()
+
+    const GeNFT = new connection.Web3.eth.Contract(
+      nftconfig as AbiItem[],
+      GeNFTAdress
+    )
+
+    const qtyTokens = await GeNFT.methods.getTotalTokens().call()
+
+    let allTokens = []
+    for (let i = 1; i <= qtyTokens; i++) {
+      allTokens.push(i)
+    }
+
+    let img_array = await Promise.all(allTokens.map(async t => {
+      let uri = await GeNFT.methods.tokenURI(t).call()
+      return uri
+    }))
+
+    setCollection(img_array)
+  }
+
+  useEffect(() =>{ 
+    handleMarketPlace()
+  }, [])
 
   async function handleSendPrompt(): Promise<void> {
 
@@ -55,14 +90,27 @@ export default function Home() {
     await Marketplace.methods.SendPrompt(prompt).send({from: myAccount})
     let lastToken = await GeNFT.methods.getTotalTokens().call()
     let lastTokenURI = await GeNFT.methods.tokenURI(lastToken).call()
-    console.log(lastTokenURI)
 
-    const min = 1000000;
-    const max = 9999999;
-    lastTokenURI = lastTokenURI.replace(/(v)\d+(?=\/3)/, `${Math.floor(Math.random() * (max - min + 1))}`);
+    const min = 10000;
+    const max = 999999;
+    const regex = /v(\d+)\//;
+    lastTokenURI = lastTokenURI.replace(regex, `v${Math.floor(Math.random() * (max - min + 1)) + min}/`)
+
+    fetch(lastTokenURI).then((r) => {}).catch(() => {})
+
+    // const regex2 = /\/(\d+)\.png$/;
+    // const match = lastTokenURI.match(regex2)
+    // lastTokenURI = lastTokenURI.replace(regex2, `/${parseInt(match[1])+1}.png`)
     console.log(lastTokenURI);
 
-    
+    console.log("ok")
+    console.log(showPopup)
+
+    setTimeout(() => {
+      setNewImage(lastTokenURI)
+      setShowPopup(true)
+    }, 10000)
+
     setPrompt("")
     return
   }
@@ -78,7 +126,8 @@ export default function Home() {
     await connection.start()
     await connection.connect()
 
-    const myAccount = await connection.getAddress()
+    let myAccount = await connection.getAddress()
+    myAccount = myAccount.toUpperCase()
 
     const GeNFT = new connection.Web3.eth.Contract(
       nftconfig as AbiItem[],
@@ -92,26 +141,22 @@ export default function Home() {
 
     const qtyTokens = await GeNFT.methods.getTotalTokens().call()
 
-    console.log(qtyTokens)
-
     let allTokens: { [key: number]: string }[] = []
     for (let i = 1; i <= qtyTokens; i++) {
       let obj: { [key: number]: string } = {}
       let owner = await GeNFT.methods.ownerOf(i).call()
+      owner = owner.toUpperCase()
       obj[i] = owner
       allTokens.push(obj)
     }
-    console.log(allTokens)
 
     let myTokens = allTokens.filter(t => Object.values(t).includes(myAccount)).map(t => parseInt(Object.keys(t)[0]))
-    console.log(myTokens)
 
     let img_array = await Promise.all(myTokens.map(async t => {
       let uri = await GeNFT.methods.tokenURI(t).call()
       return uri
     }))
 
-    console.log(img_array)
     setMyCollection(!isMyCollection)
     setCollection(img_array)
 
@@ -333,7 +378,8 @@ export default function Home() {
             }}
           />
         </Content>}
-        {!isMyCollection && <NftSlider title="NFT Marketplace"/>}
+        {showPopup && <Popup imageUrl={newImage}/>}
+        {!isMyCollection && <NftSlider title="NFT Marketplace" collection={collection}/>}
         {isMyCollection && <NftSlider title="My Collection" collection={collection}/>}
       </Main>
     </Container>

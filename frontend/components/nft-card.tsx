@@ -2,7 +2,6 @@ import { Container } from "@/styles/home"
 import { AvatarImage, Button } from "@taikai/rocket-kit"
 
 export default function NftCard(props: any) {
-    console.log(props.nft);
     return (
         <Container
             style={{

@@ -6,9 +6,7 @@ import { dappConfig } from "./config";
 
 export const defaulDappkitProvider = new DappkitReactProvider(
     dappConfig.chainId,
-    // 1313161555,
     chainDict[dappConfig.chainId].rpc,
-    // "https://testnet.aurora.dev",
     {
         autonnect: false,
         switchNetwork: true,

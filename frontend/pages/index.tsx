@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Button, Icon, TextField } from "@taikai/rocket-kit";
+import { Web3Connection, Web3Contract } from "@taikai/dappkit";
 import { useWeb3 } from "../hooks/useWeb3";
 import { Container, Main, NavBar, BrandName, Menu, Footer, Title, SubTitle, Content } from "../styles/home";
 import ConnectModal from "../components/connect-wallet-modal";
@@ -11,13 +12,119 @@ import LogoPreta from "../imgs/GenIALogoPreta.png"
 import genia1 from "../imgs/genIA1.webp"
 import genia2 from "../imgs/genIA2.webp"
 import genia3 from "../imgs/genIA3.png"
-import { isMainThread } from "worker_threads";
+
+import nftconfig from "../../contracts/abi/nft.json"
+import tokenconfig from "../../contracts/abi/token.json"
+import marketplaceconfig from "../../contracts/abi/marketplace.json"
 
 export default function Home() {
 
-  const { connected } = useWeb3();
+  const { connected, connect, disconnect, error, chainId, address } = useWeb3();
   const [isConnectModal, setConnectModal] = useState(false);
   const [isMyCollection, setMyCollection] = useState(false)
+  const [collection, setCollection] = useState([])
+  const [prompt, setPrompt] = useState("")
+
+  const GeNFTAdress = "0x96e662894f471289747A0B15EcD75133d94DA916"
+  const GeTokenAddress = ""
+
+  async function handleSendPrompt(): Promise<void> {
+
+    const connection = new Web3Connection({ web3Host: process.env.WEB3_HOST_PROVIDER })
+    await connection.start()
+    await connection.connect()
+
+    const myAccount = await connection.getAddress()
+
+    const GeNFT = new connection.Web3.eth.Contract(
+      nftconfig as AbiItem[],
+      GeNFTAdress
+    )
+
+    const GeToken = new connection.Web3.eth.Contract(
+      tokenconfig as AbiItem[],
+      GeTokenAddress
+    )
+
+    const qtyTokens = await GeNFT.methods.getTotalTokens().call()
+
+    console.log(qtyTokens)
+
+    let allTokens: { [key: number]: string }[] = []
+    for (let i = 1; i <= qtyTokens; i++) {
+      let obj: { [key: number]: string } = {}
+      let owner = await GeNFT.methods.ownerOf(i).call()
+      obj[i] = owner
+      allTokens.push(obj)
+    }
+    console.log(allTokens)
+
+    let myTokens = allTokens.filter(t => Object.values(t).includes(myAccount)).map(t => parseInt(Object.keys(t)[0]))
+    console.log(myTokens)
+
+    let img_array = await Promise.all(myTokens.map(async t => {
+      let uri = await GeNFT.methods.tokenURI(t).call()
+      return uri
+    }))
+
+    console.log(img_array);
+
+    setPrompt("")
+    return
+  }
+  
+  async function handleMyCollection(): Promise<void> {
+
+    if(isMyCollection) {
+      setMyCollection(!isMyCollection)
+      return
+    }
+
+    const connection = new Web3Connection({ web3Host: process.env.WEB3_HOST_PROVIDER })
+    await connection.start()
+    await connection.connect()
+
+    const myAccount = await connection.getAddress()
+
+    const GeNFT = new connection.Web3.eth.Contract(
+      nftconfig as AbiItem[],
+      GeNFTAdress
+    )
+
+    const GeToken = new connection.Web3.eth.Contract(
+      tokenconfig as AbiItem[],
+      GeTokenAddress
+    )
+
+    const qtyTokens = await GeNFT.methods.getTotalTokens().call()
+
+    console.log(qtyTokens)
+
+    let allTokens: { [key: number]: string }[] = []
+    for (let i = 1; i <= qtyTokens; i++) {
+      let obj: { [key: number]: string } = {}
+      let owner = await GeNFT.methods.ownerOf(i).call()
+      obj[i] = owner
+      allTokens.push(obj)
+    }
+    console.log(allTokens)
+
+    let myTokens = allTokens.filter(t => Object.values(t).includes(myAccount)).map(t => parseInt(Object.keys(t)[0]))
+    console.log(myTokens)
+
+    let img_array = await Promise.all(myTokens.map(async t => {
+      let uri = await GeNFT.methods.tokenURI(t).call()
+      return uri
+    }))
+
+    console.log(img_array)
+    setMyCollection(!isMyCollection)
+    setCollection(img_array)
+
+    setPrompt("")
+    return
+  }
+
 
   return (
     <Container>
@@ -38,14 +145,11 @@ export default function Home() {
           <Button
             ariaLabel="mycollection"
             className="button"
-            color={isMyCollection ?  "grey150" : "white"}
+            color={isMyCollection ? "grey150" : "white"}
             txtColor="black"
             value="My Collection"
             variant="solid"
-            action={() => {
-              setMyCollection(!isMyCollection)
-              console.log(isMyCollection)
-            }}
+            action={handleMyCollection}
             style={{
               margin: "2px"
             }}
@@ -114,7 +218,7 @@ export default function Home() {
               NFTs and sold at our Marketplace. Let your imagination run wild!
             </Title>
             <Container
-              style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}
+              style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
             >
               <Button
                 ariaLabel="Connect"
@@ -148,7 +252,7 @@ export default function Home() {
             </Container>
           </Container>
           <Container
-            style={{ 
+            style={{
               width: "50%",
               marginLeft: "10%",
               height: "600px",
@@ -165,7 +269,7 @@ export default function Home() {
                 position: "relative"
               }}
             >
-              <img src={genia1.src} alt="genia1" style={{height:"400px", width: "400px", position: "absolute", bottom: "-130px"}}></img>
+              <img src={genia1.src} alt="genia1" style={{ height: "400px", width: "400px", position: "absolute", bottom: "-130px" }}></img>
             </Container>
             <Container
               style={{
@@ -174,7 +278,7 @@ export default function Home() {
                 alignItems: "flex-end"
               }}
             >
-              <img src={genia2.src} alt="genia2" style={{height:"350px", width: "350px"}}></img>
+              <img src={genia2.src} alt="genia2" style={{ height: "350px", width: "350px" }}></img>
             </Container>
             <Container
               style={{
@@ -183,7 +287,7 @@ export default function Home() {
                 position: "relative"
               }}
             >
-              <img src={genia3.src} alt="genia3" style={{height:"350px", width: "350px", position: "absolute", bottom: "0"}}></img>
+              <img src={genia3.src} alt="genia3" style={{ height: "350px", width: "350px", position: "absolute", bottom: "0" }}></img>
             </Container>
           </Container>
         </Container>}
@@ -202,7 +306,8 @@ export default function Home() {
           >Be bold. Be wild. Be GenIA.</Title>
           <TextField
             name="generate-prompt"
-            onChange={function noRefCheck() { }}
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
             placeholder="Generate Image w/ Prompt"
             type="text"
             style={{
@@ -221,13 +326,12 @@ export default function Home() {
           <Button
             ariaLabel="generate"
             className="button"
-
             value="Generate"
             color="red400"
             txtColor="oracle100"
             rounded
             variant="solid"
-            action={() => setConnectModal(true)}
+            action={handleSendPrompt}
             style={{
               marginTop: "20px",
               height: "70px",
@@ -237,7 +341,7 @@ export default function Home() {
           />
         </Content>}
         {!isMyCollection && <NftSlider title="NFT Marketplace"/>}
-        {isMyCollection && <NftSlider title="My Collection"/>}
+        {isMyCollection && <NftSlider title="My Collection" collection={collection}/>}
       </Main>
     </Container>
   );

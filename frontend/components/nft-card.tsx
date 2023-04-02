@@ -2,6 +2,7 @@ import { Container } from "@/styles/home"
 import { AvatarImage, Button } from "@taikai/rocket-kit"
 
 export default function NftCard(props: any) {
+    console.log(props.nft);
     return (
         <Container
             style={{
@@ -10,13 +11,21 @@ export default function NftCard(props: any) {
                 alignItems: "center",
             }}
         >
-            <AvatarImage
+            {/* <AvatarImage
                 style={{
                     width: "calc(33.33 % - 10px)",
                     marginRight: "10px"
                 }}
                 size={200}
-            />
+            /> */}
+            <img
+                style={{
+                    width: "calc(33.33 % - 10px)",
+                    marginRight: "10px"
+                }}
+                src={props.nft}
+            >
+            </img>
             <div
                 style={props.mode == 1 ? {
                     marginTop: "30px",

@@ -9,25 +9,27 @@ let array_imgs: { [key: string]: string }[] = [
 
 export default function NftSlider(props: any) {
 
-    let mode = props.title == "My Collection" ?  1 :  2
+    let mode = props.title == "My Collection" ? 1 : 2
+    
+    let array_imgs = props.collection
 
     return (
         <Container
-            style={mode == 1 ? 
-            {
-                background: "black",
-                color: "#41424c",
-                textAlign: "center",
-                height: "70%"
-            }
-            : {
-                background: "white",
-                color: "#41424c",
-                textAlign: "center",
-                height: "70%"
-            }}
+            style={mode == 1 ?
+                {
+                    background: "black",
+                    color: "#41424c",
+                    textAlign: "center",
+                    height: "70%"
+                }
+                : {
+                    background: "white",
+                    color: "#41424c",
+                    textAlign: "center",
+                    height: "70%"
+                }}
         >
-            <Title style={ mode == 1 ?
+            <Title style={mode == 1 ?
                 { marginTop: "50px", fontSize: "40px", color: "white" } : { marginTop: "50px", fontSize: "40px" }}
             >{props.title}</Title>
             <Container
@@ -38,11 +40,11 @@ export default function NftSlider(props: any) {
                     height: "60%"
                 }}
             >
-                {array_imgs.map(i => {
+                {array_imgs ? array_imgs.map((i: string) => {
                     return (
-                        <NftCard mode = {mode} nft = {i} />
+                        <NftCard mode={mode} nft={i} />
                     )
-                })}
+                }) : ""}
             </Container>
 
         </Container>

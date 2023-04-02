@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 
-const Popup = ({ imageUrl }) => {
+const Popup = () => {
   const [showPopup, setShowPopup] = useState(true);
 
   const handleClosePopup = () => {

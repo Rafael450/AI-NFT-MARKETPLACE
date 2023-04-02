@@ -44,8 +44,8 @@ contract MarketPlace{
     }
 
     function CreateURI() internal view returns(string memory) {
-        uint256 total = GeNFT.getTotalTokens();
-        return string(abi.encodePacked("www.link-exemplo.com/", total.toString()));
+        uint256 total = GeNFT.getTotalTokens() + 1;
+        return string(abi.encodePacked("https://res.cloudinary.com/dsebklwp5/image/upload/v1/", total.toString(), ".png"));
     }
 
     function SendPrompt(string memory _prompt) public payable {

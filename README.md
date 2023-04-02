@@ -50,9 +50,9 @@ This is how the application works.
 ### User Interface
 1. When you load the page you will see a brief about how to use GenIA. On the same page, you will see the Try GenIA button. After clicking on it, you will be asked to connect your MetaMask to the site.
 
-2 After you successfully connect your MetaMask, you will be able to see a text box to input your own PROMPT - which will be used to generate an AI image from DALL-E2 API -, you will be able to mint a NFT on Aurora blockchain by clicking on Generate.
+2. After you successfully connect your MetaMask, you will be able to see a text box to input your own PROMPT - which will be used to generate an AI image from DALL-E2 API -, you will be able to mint a NFT on Aurora blockchain by clicking on Generate.
 
-3 Also, you always are able to scroll down the main page to see the AI generated NFT Marketplace that is in there from other users selling their own NFTs. There, if you have a connection with MetaMask on the site, you will be able to buy other people's NFTs.
+3. Also, you always are able to scroll down the main page to see the AI generated NFT Marketplace that is in there from other users selling their own NFTs. There, if you have a connection with MetaMask on the site, you will be able to buy other people's NFTs.
 
 4. If you have your wallet connected, you will also be able to click on My Collection to see your own AI generated NFT collection! There, you also will be able to SELL your NFT in the webpage marketplace, choosing the price in GenIA Token.
 

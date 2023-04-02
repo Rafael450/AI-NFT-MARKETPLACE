@@ -253,8 +253,8 @@ export default function Home() {
               You can purchase our tokens tax-free and earn more by selling your art.
             </Title>
             <Title style={{ fontWeight: "500", fontSize: "2.5rem" }}>
-              Each GenIA token can generate up to 4 images, which can be minted as
-              NFTs and sold at our Marketplace. Let your imagination run wild!
+              Each GenIA token can generate an image, which can be minted as
+              NFT and sold at our Marketplace. Let your imagination run wild!
             </Title>
             <Container
               style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
